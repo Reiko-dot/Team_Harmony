@@ -11,7 +11,7 @@
 # logbook
 
 02-02 > 06-02 feb 2026
-# Dinsdag- 03-02
+Dinsdag- 03-02
 // absent.
 
 Woensdag- 04-02
