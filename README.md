@@ -21,3 +21,4 @@ Woensdag- 04-02
 
 Vrijdag- 06-02
 // trello bord aangepast, research document ingevuld.
+
