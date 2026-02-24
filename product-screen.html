@@ -1,21 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>products</title>
+    <title>Happy Herbivore POS</title>
     <link rel="stylesheet" href="product.css">
 </head>
-
-
-
 <body>
 
-    <header>
-        <img src="images/dino.png" alt="dino-logo" class="logo-product">
-    </header>
+    <div class="app-container">
+        <header class="header">
+            <img src="images/dino.png" alt="Dino Mascot" class="dino-image">
+            <img src="images/herbivore-title.png" alt="Happy Herbivore" class="title-image">
+        </header>
+
+        <div class="main-content">
+            <aside class="sidebar">
+                <button class="category-btn active">Milktea</button>
+                <button class="category-btn">Milktea</button>
+                <button class="category-btn">Milktea</button>
+                <button class="category-btn">Milktea</button>
+                <button class="category-btn">Milktea</button>
+            </aside>
+
+            <section class="product-grid">
+                <div class="product-item">
+                    <img src="milktea-sample.jpg" alt="Milk Tea">
+                    <div class="product-details">
+                        <span class="name">Name Drink</span>
+                        <span class="price">€ 0.00</span>
+                    </div>
+                </div>
+                <div class="product-placeholder"></div>
+                <div class="product-placeholder"></div>
+            </section>
+        </div>
+
+        <footer class="footer">
+            <div class="button-row">
+                <button class="clear-btn">CLEAR ORDER</button>
+                <button class="order-btn">ORDER</button>
+            </div>
+            <div class="info-row">
+                <span>Orderoverview</span>
+                <span class="total-label">Total</span>
+                <span class="total-price">€ 0.00</span>
+            </div>
+        </footer>
+    </div>
 
 </body>
-
 </html>
