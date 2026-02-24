@@ -1,0 +1,13 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: rgb(31, 31, 31);
+}
+
+header {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    aspect-ratio: 9 / 16;
+}

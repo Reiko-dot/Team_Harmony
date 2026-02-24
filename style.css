@@ -1,0 +1,30 @@
+body {
+     margin: 0;
+    padding: 0;
+    height: 100%;
+    background: rgb(31, 31, 31);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.kiosk-screen {
+    aspect-ratio: 9 / 16;
+    height: 100vh;
+    background: white;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.logo-main {
+    height: auto;
+    width: 370px;
+    margin: 0 auto;
+}
+
+h1 {
+    font-size: 64px;
+    text-align: center;
+}
