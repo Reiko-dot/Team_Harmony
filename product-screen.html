@@ -16,30 +16,65 @@
 
         <div class="main-content">
             <aside class="sidebar">
-                <button class="category-btn active">Milktea</button>
-                <button class="category-btn">Milktea</button>
-                <button class="category-btn">Milktea</button>
-                <button class="category-btn">Milktea</button>
-                <button class="category-btn">Milktea</button>
+                <button class="category-btn active" data-category="drinks">Drinks</button>
+                <button class="category-btn" data-category="breakfast">Breakfast</button>
+                <button class="category-btn" data-category="lunch">Lunch</button>
+                <button class="category-btn" data-category="snacks">Snacks</button>
+                <button class="category-btn" data-category="desserts">Desserts</button>
+                <button class="category-btn" data-category="specials">Specials</button>
             </aside>
 
-            <section class="product-grid">
-                <div class="product-item">
-                    <img src="milktea-sample.jpg" alt="Milk Tea">
+            <section class="product-grid" id="product-container">
+                
+                <div class="product-item category-drinks">
+                    <img src="images/milktea.jpg" alt="Milk Tea">
                     <div class="product-details">
-                        <span class="name">Name Drink</span>
-                        <span class="price">€ 0.00</span>
+                        <span class="name">Boba Tea</span>
+                        <span class="price">€ 4.50</span>
                     </div>
                 </div>
+                <div class="product-item category-drinks">
+                    <img src="images/coffee.jpg" alt="Coffee">
+                    <div class="product-details">
+                        <span class="name">Iced Latte</span>
+                        <span class="price">€ 3.80</span>
+                    </div>
+                </div>
+
+                <div class="product-item category-breakfast">
+                    <img src="images/acai-bowl.png" alt="Acai">
+                    <div class="product-details">
+                        <span class="name">Acai Bowl</span>
+                        <span class="price">€ 7.50</span>
+                    </div>
+                </div>
+
+                <div class="product-item category-lunch">
+                    <img src="images/PB-CT.png" alt="Tofu">
+                    <div class="product-details">
+                        <span class="name">Tofu Bowl</span>
+                        <span class="price">€ 9.50</span>
+                    </div>
+                </div>
+
+                <div class="product-item category-snacks">
+                    <div class="product-placeholder"></div>
+                    <div class="product-details">
+                        <span class="name">Vegan Wrap</span>
+                        <span class="price">€ 5.00</span>
+                    </div>
+                </div>
+
                 <div class="product-placeholder"></div>
                 <div class="product-placeholder"></div>
+
             </section>
         </div>
 
         <footer class="footer">
             <div class="button-row">
                 <button class="clear-btn">CLEAR ORDER</button>
-                <button class="order-btn">ORDER</button>
+                <button class="order-btn">CART</button>
             </div>
             <div class="info-row">
                 <span>Orderoverview</span>
@@ -48,6 +83,8 @@
             </div>
         </footer>
     </div>
+
+    <script src="main.js"></script>
 
 </body>
 </html>

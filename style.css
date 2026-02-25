@@ -1,4 +1,4 @@
-body {
+/* body {
      margin: 0;
     padding: 0;
     height: 100%;
@@ -27,4 +27,108 @@ body {
 h1 {
     font-size: 64px;
     text-align: center;
+} */
+
+
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    background: rgb(31, 31, 31);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    font-family: sans-serif;
+}
+
+.kiosk-screen {
+    position: relative;
+    aspect-ratio: 9 / 16;
+    height: 100vh;
+    background: black; /* Basis is zwart voor een strakke look */
+    overflow: hidden;
+}
+
+/* De container voor de foto's */
+.background-slider {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Zorg dat de afbeeldingen de hele kiosk vullen */
+.background-slider img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Dit zorgt ervoor dat de foto niet vervormt */
+}
+
+/* Afbeelding 1 is de basis en staat altijd 'aan' */
+.slide-img-1 {
+    z-index: 1;
+    filter: blur(2px);
+    transform: scale(1.1);
+}
+
+/* Afbeelding 2 fadet over afbeelding 1 heen */
+.slide-img-2 {
+    z-index: 2;
+    animation: fadeLoop 6s infinite alternate ease-in-out;
+    filter: blur(2px);
+    transform: scale(1.1);
+}
+
+
+
+
+/* De tekst en logo container */
+.content {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    /* Veranderd van 'center' naar 'flex-start' om alles bovenaan te laten beginnen */
+    justify-content: flex-start; 
+    align-items: center;
+    /* Bepaalt hoe ver van de bovenkant het logo begint (bijv. 15% van het scherm) */
+    padding-top: 15vh; 
+    background: rgba(0, 0, 0, 0.2); 
+    color: white;
+    pointer-events: none;
+}
+
+.logo-main {
+    height: auto;
+    width: 370px;
+    /* Ruimte tussen het logo en de "Touch screen" tekst */
+    margin-bottom: 50px; 
+}
+
+h1 {
+    font-size: 64px;
+    text-align: center;
+    text-shadow: 2px 2px 20px rgba(0,0,0,0.7);
+    margin: 0;
+    padding: 0 40px; /* Wat extra padding aan de zijkanten voor de tekst */
+}
+
+/* Verbeterde Animatie voor een vloeiende overgang */
+@keyframes fadeLoop {
+    0%, 15% { 
+        opacity: 0; /* Toont img-1 */
+    }
+    85%, 100% { 
+        opacity: 1; /* Toont img-2 */
+    }
 }

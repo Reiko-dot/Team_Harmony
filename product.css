@@ -11,32 +11,33 @@ body {
 }
 
 .app-container {
-    width: 400px; /* Mobile/Kiosk width */
+    aspect-ratio: 9 / 16;
     height: 100vh;
     background-color: white;
     display: flex;
     flex-direction: column;
-    position: relative;
     box-shadow: 0 0 20px rgba(0,0,0,0.5);
 }
 
 /* Header */
 .header {
     background-color: #8cc63f; /* Bright Green */
-    padding: 10px;
     display: flex;
     align-items: center;
-    justify-content: space-around;
-    border-bottom: 5px solid #fff;
     box-shadow: 0 4px 5px rgba(0,0,0,0.1);
+    height: 100px;
+    width: auto;
+    margin-bottom: 10px;
 }
 
 .dino-image {
-    height: 70px;
+    width: 200px;
+    margin-top: 10px;
 }
 
 .title-image {
-    height: 100px;
+    height: 240px;
+    margin-left: 40px;
 }
 
 /* Content Area */
@@ -47,23 +48,34 @@ body {
 
 /* Sidebar */
 .sidebar {
-    width: 80px;
+     width: 100px; /* Iets breder voor tekst */
+    height: auto;
+    min-height: 60vh;
     background-color: #fdb981; /* Light Orange */
-    padding: 10px 5px;
+    padding: 5px 5px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     box-shadow: inset -2px 0 5px rgba(0,0,0,0.1);
+    border-radius: 8px;
 }
 
 .category-btn {
-    background-color: #ff7e26; /* Darker Orange */
+    background-color: #ff7e26;
     border: none;
     color: white;
-    padding: 20px 5px;
-    font-size: 12px;
-    border-radius: 5px;
+    padding: 35px 10px; /* Iets minder padding boven/onder zodat tekst past */
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 8px;
     cursor: pointer;
+    transition: 0.2s;
+}
+
+.category-btn.active {
+    background-color: #0b2b16; /* Donkergroen zoals de order-btn */
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    transform: scale(1.05);
 }
 
 /* Product Grid */
@@ -77,8 +89,11 @@ body {
 }
 
 .product-item {
+    display: none; /* Standaard verbergen we ze, JS laat de juiste zien */
     border: 1px solid #8cc63f;
-    padding: 2px;
+    padding: 5px;
+    background: white;
+    border-radius: 5px;
 }
 
 .product-item img {
