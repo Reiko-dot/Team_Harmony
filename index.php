@@ -5,8 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kiosk Start</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        #flash {
+            position: fixed;
+            inset: 0;
+            background: white;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 9999;
+            transition: opacity 0.28s ease;
+        }
+    </style>
 </head>
 <body>
+    <div id="flash"></div>
+
     <div class="kiosk-wrap" id="kioskWrap">
         <div class="background-slider">
             <img src="images/acai-bowl.png" class="slide-img-1 active">
@@ -22,6 +35,6 @@
         </div>
     </div>
 
-    <script src="main.js"></script>
+    <script src="kiosk-start.js"></script>
 </body>
 </html>

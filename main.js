@@ -160,7 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p class="empty-msg">🌿 No items added yet.</p>
                         <div class="modal-actions">
                             <button class="modal-close-btn">Close</button>
-                            <button class="modal-menu-btn" onclick="window.location.href='index.html'">🏠 Menu</button>
+                            <button class="modal-menu-btn" onclick="window.location.href='index.php'">🏠 Menu</button>
                         </div>
                     </div>
                 </div>`;
@@ -289,7 +289,7 @@ document.addEventListener('DOMContentLoaded', () => {
             updateFooter();
 
             modal.querySelector('#done-btn').addEventListener('click', () => modal.remove());
-            modal.querySelector('#menu-btn').addEventListener('click', () => window.location.href = 'index.html');
+            modal.querySelector('#menu-btn').addEventListener('click', () => window.location.href = 'index.php');
 
         } catch (err) {
             confirmBtn.textContent = 'Place Order';
