@@ -23,7 +23,7 @@
     <div class="kiosk-wrap" id="kioskWrap">
         <div class="background-slider">
             <img src="images/acai-bowl.png" class="slide-img-1 active">
-            <img src="images/PB-CT.png" class="slide-img-2">
+            <img src="images/pb-cacao-toast.png" class="slide-img-2">
         </div>
         <div class="overlay"></div>
         <div class="content">
