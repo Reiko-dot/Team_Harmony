@@ -1,45 +1,91 @@
 document.addEventListener('DOMContentLoaded', () => {
     const buttons = document.querySelectorAll('.category-btn');
-    const products = document.querySelectorAll('.product-item');
+    const container = document.getElementById('product-container');
 
     let cart = {};
+    let currentCategory = 'drinks';
 
-    function filterCategory(category) {
-        products.forEach(product => {
-            product.style.display = product.classList.contains('category-' + category) ? 'block' : 'none';
-        });
+    // ── Load products from DB via PHP ──────────────────────────
+    async function loadProducts(category) {
+        container.innerHTML = '<div class="loading-msg">Loading...</div>';
+        currentCategory = category;
+
+        try {
+            const res = await fetch(`get-products.php?category=${category}`);
+            const json = await res.json();
+
+            if (!json.success || !json.data.length) {
+                container.innerHTML = '<div class="loading-msg">No products found.</div>';
+                return;
+            }
+
+            container.innerHTML = '';
+
+            json.data.forEach(product => {
+                const div = document.createElement('div');
+                div.className = `product-item category-${product.category_slug}`;
+                div.dataset.id = product.id;
+                div.dataset.name = product.name;
+                div.dataset.price = product.price;
+
+                const imgHTML = product.image_file
+                    ? `<img src="images/${product.image_file}" alt="${product.name}">`
+                    : `<div class="product-placeholder"></div>`;
+
+                const badge = product.dietary_code === 'VG'
+                    ? '<span class="dietary-badge vegan">VG</span>'
+                    : '<span class="dietary-badge veg">V</span>';
+
+                div.innerHTML = `
+                    ${imgHTML}
+                    <div class="product-details">
+                        <span class="name">${product.name}</span>
+                        <span class="price">€ ${parseFloat(product.price).toFixed(2)}</span>
+                    </div>
+                    ${badge}`;
+
+                div.addEventListener('click', () => addToCart(div, product));
+                container.appendChild(div);
+            });
+
+        } catch (err) {
+            container.innerHTML = '<div class="loading-msg">Failed to load products.</div>';
+            console.error(err);
+        }
     }
 
+    // ── Category buttons ───────────────────────────────────────
     buttons.forEach(button => {
         button.addEventListener('click', () => {
             buttons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
-            filterCategory(button.getAttribute('data-category'));
+            loadProducts(button.getAttribute('data-category'));
         });
     });
 
-    filterCategory('drinks');
+    // Load drinks on start
+    loadProducts('drinks');
 
-    products.forEach(product => {
-        product.addEventListener('click', () => {
-            const name = product.querySelector('.name').textContent.trim();
-            const priceText = product.querySelector('.price').textContent.trim();
-            const price = parseFloat(priceText.replace('€', '').replace(',', '.').trim());
-            const img = product.querySelector('img') ? product.querySelector('img').src : null;
+    // ── Add to cart ────────────────────────────────────────────
+    function addToCart(el, product) {
+        const name = product.name;
+        const price = parseFloat(product.price);
+        const img = product.image_file ? `images/${product.image_file}` : null;
+        const id = product.id;
 
-            if (cart[name]) {
-                cart[name].qty += 1;
-            } else {
-                cart[name] = { price, qty: 1, img };
-            }
+        if (cart[name]) {
+            cart[name].qty += 1;
+        } else {
+            cart[name] = { price, qty: 1, img, id };
+        }
 
-            product.classList.add('added');
-            setTimeout(() => product.classList.remove('added'), 400);
+        el.classList.add('added');
+        setTimeout(() => el.classList.remove('added'), 400);
 
-            updateFooter();
-        });
-    });
+        updateFooter();
+    }
 
+    // ── Update footer ──────────────────────────────────────────
     function updateFooter() {
         const totalItems = Object.values(cart).reduce((s, i) => s + i.qty, 0);
         const totalPrice = Object.values(cart).reduce((s, i) => s + i.price * i.qty, 0);
@@ -47,15 +93,17 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('.total-price').textContent = '€ ' + totalPrice.toFixed(2);
 
         const orderSpan = document.querySelector('.info-row span:first-child');
-        orderSpan.textContent = totalItems > 0 ? `${totalItems} item${totalItems > 1 ? 's' : ''} in order` : 'Orderoverview';
+        orderSpan.textContent = totalItems > 0
+            ? `${totalItems} item${totalItems > 1 ? 's' : ''} in order`
+            : 'Orderoverview';
 
         const orderBtn = document.querySelector('.order-btn');
         orderBtn.textContent = totalItems > 0 ? `CART (${totalItems})` : 'CART';
     }
 
+    // ── Clear order ────────────────────────────────────────────
     document.querySelector('.clear-btn').addEventListener('click', () => {
-        const totalItems = Object.values(cart).reduce((s, i) => s + i.qty, 0);
-        if (totalItems === 0) return;
+        if (Object.keys(cart).length === 0) return;
         showClearConfirmModal();
     });
 
@@ -66,12 +114,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const modal = document.createElement('div');
         modal.id = 'clear-modal';
         modal.innerHTML = `
-            <div class="modal-overlay" style="align-items: flex-end;">
-                <div class="modal-box clear-confirm-box" style="height: auto; max-height: none; gap: 16px;">
+            <div class="modal-overlay">
+                <div class="modal-box clear-confirm-box" style="height:auto;max-height:none;gap:16px;">
                     <div class="modal-header">
                         <h2>🗑️ Clear Order?</h2>
                     </div>
-                    <p style="color: #555; font-size: 16px; margin: 0;">Are you sure you want to remove all items from your order? This cannot be undone.</p>
+                    <p style="color:#555;font-size:16px;margin:0;">Are you sure you want to remove all items? This cannot be undone.</p>
                     <div class="modal-actions">
                         <button class="modal-close-btn" id="clear-cancel-btn">Keep Items</button>
                         <button class="modal-confirm-btn" id="clear-proceed-btn" style="background:#c0392b;">Clear Order</button>
@@ -80,14 +128,10 @@ document.addEventListener('DOMContentLoaded', () => {
             </div>`;
 
         document.querySelector('.app-container').appendChild(modal);
-
-        requestAnimationFrame(() => {
-            const box = modal.querySelector('.modal-box');
-            if (box) box.classList.add('visible');
-        });
+        requestAnimationFrame(() => modal.querySelector('.modal-box').classList.add('visible'));
 
         modal.querySelector('#clear-cancel-btn').addEventListener('click', () => modal.remove());
-        modal.querySelector('.modal-overlay').addEventListener('click', (e) => {
+        modal.querySelector('.modal-overlay').addEventListener('click', e => {
             if (e.target.classList.contains('modal-overlay')) modal.remove();
         });
         modal.querySelector('#clear-proceed-btn').addEventListener('click', () => {
@@ -97,9 +141,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    document.querySelector('.order-btn').addEventListener('click', () => {
-        showCartModal();
-    });
+    // ── Cart modal ─────────────────────────────────────────────
+    document.querySelector('.order-btn').addEventListener('click', showCartModal);
 
     function showCartModal() {
         const existing = document.getElementById('cart-modal');
@@ -117,6 +160,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <p class="empty-msg">🌿 No items added yet.</p>
                         <div class="modal-actions">
                             <button class="modal-close-btn">Close</button>
+                            <button class="modal-menu-btn" onclick="window.location.href='index.html'">🏠 Menu</button>
                         </div>
                     </div>
                 </div>`;
@@ -158,19 +202,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         document.querySelector('.app-container').appendChild(modal);
-
         requestAnimationFrame(() => {
             const box = modal.querySelector('.modal-box');
             if (box) box.classList.add('visible');
         });
 
         modal.querySelector('.modal-close-btn').addEventListener('click', () => modal.remove());
-        modal.querySelector('.modal-overlay').addEventListener('click', (e) => {
+        modal.querySelector('.modal-overlay').addEventListener('click', e => {
             if (e.target.classList.contains('modal-overlay')) modal.remove();
         });
 
         modal.querySelectorAll('.qty-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
+            btn.addEventListener('click', e => {
                 const name = e.target.getAttribute('data-name');
                 if (btn.classList.contains('minus')) {
                     cart[name].qty -= 1;
@@ -186,55 +229,72 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const confirmBtn = modal.querySelector('.modal-confirm-btn');
         if (confirmBtn) {
-            confirmBtn.addEventListener('click', () => {
-                const orderNumber = String(Math.floor(Math.random() * 900) + 100);
-                modal.innerHTML = `
-                    <div class="modal-overlay">
-                        <div class="modal-box confirm-box visible" style="gap: 12px; align-items: center; text-align: center;">
-                            <div class="checkmark">✓</div>
-                            <h2 style="margin: 0; font-size: 22px; color: #0b2b16;">Order Placed!</h2>
-                            <p style="margin: 0; color: #555; font-size: 15px;">Your food is being prepared. 🌿</p>
-                            <div style="background: #f5f5f5; border-radius: 16px; padding: 18px 32px; margin: 4px 0; width: 100%;">
-                                <p style="margin: 0 0 4px 0; font-size: 13px; color: #888; letter-spacing: 1px; text-transform: uppercase; font-weight: bold;">Your order number</p>
-                                <p style="margin: 0; font-size: 64px; font-weight: 900; color: #0b2b16; line-height: 1;">#${orderNumber}</p>
-                            </div>
-                            <p style="margin: 0; font-size: 13px; color: #aaa;">We'll call your number when it's ready</p>
-                            <div class="modal-actions" style="width: 100%; flex-direction: column; gap: 10px; margin-top: 4px;">
-                                <button class="modal-confirm-btn" id="done-btn" style="width: 100%; padding: 14px; font-size: 16px;">Continue ordering</button>
-                                <button id="menu-btn" style="width: 100%; padding: 14px; background: #e2f497; border: none; border-radius: 8px; font-weight: bold; font-size: 15px; color: #0b2b16; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
-                                    <span style="font-size: 18px;">🏠</span> Back to Menu
-                                </button>
-                            </div>
-                        </div>
-                    </div>`;
-                cart = {};
-                updateFooter();
-                modal.querySelector('#done-btn').addEventListener('click', () => modal.remove());
-                modal.querySelector('#menu-btn').addEventListener('click', () => window.location.href = 'index.html');
+            confirmBtn.addEventListener('click', () => placeOrder(modal));
+        }
+    }
+
+    // ── Place order via PHP ────────────────────────────────────
+    async function placeOrder(modal) {
+        // Get order type from sessionStorage (set by order-type.html)
+        const orderType = sessionStorage.getItem('order_type') || 'eat_in';
+
+        // Build items array with product_id and quantity
+        const items = Object.values(cart).map(item => ({
+            product_id: item.id,
+            quantity: item.qty
+        }));
+
+        // Show loading state
+        const confirmBtn = modal.querySelector('.modal-confirm-btn');
+        confirmBtn.textContent = 'Placing order...';
+        confirmBtn.disabled = true;
+
+        try {
+            const res = await fetch('place-order.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ order_type: orderType, items })
             });
+            const json = await res.json();
+
+            if (!json.success) throw new Error(json.error || 'Order failed');
+
+            // Extract just the number part e.g. "HH-20260302-042" → show "042"
+            const parts = json.order_number.split('-');
+            const displayNum = parts[parts.length - 1];
+
+            // Show success screen
+            modal.innerHTML = `
+                <div class="modal-overlay">
+                    <div class="modal-box confirm-box visible" style="gap:12px;align-items:center;text-align:center;">
+                        <div class="checkmark">✓</div>
+                        <h2 style="margin:0;font-size:22px;color:#0b2b16;">Order Placed!</h2>
+                        <p style="margin:0;color:#555;font-size:15px;">Your food is being prepared. 🌿</p>
+                        <div style="background:#f5f5f5;border-radius:16px;padding:18px 32px;margin:4px 0;width:100%;">
+                            <p style="margin:0 0 4px 0;font-size:13px;color:#888;letter-spacing:1px;text-transform:uppercase;font-weight:bold;">Your order number</p>
+                            <p style="margin:0;font-size:64px;font-weight:900;color:#0b2b16;line-height:1;">#${displayNum}</p>
+                            <p style="margin:4px 0 0;font-size:12px;color:#aaa;">${json.order_number}</p>
+                        </div>
+                        <p style="margin:0;font-size:13px;color:#aaa;">We'll call your number when it's ready</p>
+                        <div class="modal-actions" style="width:100%;flex-direction:column;gap:10px;margin-top:4px;">
+                            <button class="modal-confirm-btn" id="done-btn" style="width:100%;padding:14px;font-size:16px;">Continue ordering</button>
+                            <button id="menu-btn" style="width:100%;padding:14px;background:#e2f497;border:none;border-radius:8px;font-weight:bold;font-size:15px;color:#0b2b16;cursor:pointer;">
+                                🏠 Back to Menu
+                            </button>
+                        </div>
+                    </div>
+                </div>`;
+
+            cart = {};
+            updateFooter();
+
+            modal.querySelector('#done-btn').addEventListener('click', () => modal.remove());
+            modal.querySelector('#menu-btn').addEventListener('click', () => window.location.href = 'index.html');
+
+        } catch (err) {
+            confirmBtn.textContent = 'Place Order';
+            confirmBtn.disabled = false;
+            alert('Something went wrong: ' + err.message);
         }
     }
 });
-
-
-
-// Slideshow
-        const img1 = document.querySelector('.slide-img-1');
-        const img2 = document.querySelector('.slide-img-2');
-        let cur = 1;
-        setInterval(() => {
-            if (cur === 1) { img1.classList.remove('active'); img2.classList.add('active'); cur = 2; }
-            else { img2.classList.remove('active'); img1.classList.add('active'); cur = 1; }
-        }, 3500);
-
-        // Tap to navigate
-        document.getElementById('kioskWrap').addEventListener('click', (e) => {
-            const wrap = e.currentTarget;
-            const ripple = document.createElement('div');
-            ripple.className = 'ripple';
-            const rect = wrap.getBoundingClientRect();
-            const size = 80;
-            ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - rect.left - size/2}px;top:${e.clientY - rect.top - size/2}px`;
-            wrap.appendChild(ripple);
-            setTimeout(() => window.location.href = 'order-type.html', 350);
-        });
