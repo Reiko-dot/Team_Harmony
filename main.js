@@ -187,22 +187,54 @@ document.addEventListener('DOMContentLoaded', () => {
         const confirmBtn = modal.querySelector('.modal-confirm-btn');
         if (confirmBtn) {
             confirmBtn.addEventListener('click', () => {
+                const orderNumber = String(Math.floor(Math.random() * 900) + 100);
                 modal.innerHTML = `
                     <div class="modal-overlay">
-                        <div class="modal-box confirm-box visible">
+                        <div class="modal-box confirm-box visible" style="gap: 12px; align-items: center; text-align: center;">
                             <div class="checkmark">✓</div>
-                            <h2>Order Placed!</h2>
-                            <p>Your food is being prepared. 🌿</p>
-                            <div class="modal-actions" style="justify-content: center; gap: 16px;">
-                                <button class="modal-close-btn" id="done-btn">Continue</button>
-                                <button class="modal-menu-btn" onclick="window.location.href='index.html'">🏠 Menu</button>
+                            <h2 style="margin: 0; font-size: 22px; color: #0b2b16;">Order Placed!</h2>
+                            <p style="margin: 0; color: #555; font-size: 15px;">Your food is being prepared. 🌿</p>
+                            <div style="background: #f5f5f5; border-radius: 16px; padding: 18px 32px; margin: 4px 0; width: 100%;">
+                                <p style="margin: 0 0 4px 0; font-size: 13px; color: #888; letter-spacing: 1px; text-transform: uppercase; font-weight: bold;">Your order number</p>
+                                <p style="margin: 0; font-size: 64px; font-weight: 900; color: #0b2b16; line-height: 1;">#${orderNumber}</p>
+                            </div>
+                            <p style="margin: 0; font-size: 13px; color: #aaa;">We'll call your number when it's ready</p>
+                            <div class="modal-actions" style="width: 100%; flex-direction: column; gap: 10px; margin-top: 4px;">
+                                <button class="modal-confirm-btn" id="done-btn" style="width: 100%; padding: 14px; font-size: 16px;">Continue ordering</button>
+                                <button id="menu-btn" style="width: 100%; padding: 14px; background: #e2f497; border: none; border-radius: 8px; font-weight: bold; font-size: 15px; color: #0b2b16; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                                    <span style="font-size: 18px;">🏠</span> Back to Menu
+                                </button>
                             </div>
                         </div>
                     </div>`;
                 cart = {};
                 updateFooter();
                 modal.querySelector('#done-btn').addEventListener('click', () => modal.remove());
+                modal.querySelector('#menu-btn').addEventListener('click', () => window.location.href = 'index.html');
             });
         }
     }
 });
+
+
+
+// Slideshow
+        const img1 = document.querySelector('.slide-img-1');
+        const img2 = document.querySelector('.slide-img-2');
+        let cur = 1;
+        setInterval(() => {
+            if (cur === 1) { img1.classList.remove('active'); img2.classList.add('active'); cur = 2; }
+            else { img2.classList.remove('active'); img1.classList.add('active'); cur = 1; }
+        }, 3500);
+
+        // Tap to navigate
+        document.getElementById('kioskWrap').addEventListener('click', (e) => {
+            const wrap = e.currentTarget;
+            const ripple = document.createElement('div');
+            ripple.className = 'ripple';
+            const rect = wrap.getBoundingClientRect();
+            const size = 80;
+            ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - rect.left - size/2}px;top:${e.clientY - rect.top - size/2}px`;
+            wrap.appendChild(ripple);
+            setTimeout(() => window.location.href = 'order-type.html', 350);
+        });
