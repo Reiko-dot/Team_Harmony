@@ -25,19 +25,19 @@ body {
     display: flex;
     align-items: center;
     box-shadow: 0 4px 5px rgba(0,0,0,0.1);
-    height: 100px;
+    height: 140px;
     width: auto;
     margin-bottom: 10px;
 }
 
 .dino-image {
-    width: 200px;
+    width: 300px;
     margin-top: 10px;
 }
 
 .title-image {
-    height: 240px;
-    margin-left: 40px;
+    height: 350px;
+    margin-left: 90px;
 }
 
 /* Content Area */
@@ -48,28 +48,30 @@ body {
 
 /* Sidebar */
 .sidebar {
-     width: 100px; /* Iets breder voor tekst */
-    height: auto;
-    min-height: 60vh;
+     width: 120px; /* Iets breder voor tekst */
+    height: 50px;
+    min-height: 40vh;
     background-color: #fdb981; /* Light Orange */
-    padding: 5px 5px;
+    padding: 10px 10px;
     display: flex;
     flex-direction: column;
     gap: 10px;
     box-shadow: inset -2px 0 5px rgba(0,0,0,0.1);
     border-radius: 8px;
+    margin: 5px;
 }
 
 .category-btn {
     background-color: #ff7e26;
     border: none;
     color: white;
-    padding: 35px 10px; /* Iets minder padding boven/onder zodat tekst past */
-    font-size: 14px;
+    padding: 43px 20px; /* Iets minder padding boven/onder zodat tekst past */
+    font-size: 15px;
     font-weight: bold;
     border-radius: 8px;
     cursor: pointer;
     transition: 0.2s;
+    
 }
 
 .category-btn.active {
