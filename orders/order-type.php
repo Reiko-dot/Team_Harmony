@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Type</title>
+   
+    <link rel="stylesheet" href="../css/order-type.css">
+</head>
+<body>
+    <div class="kiosk-wrap">
+        <div class="header">
+            <!-- images/ is at root → go up one level -->
+            <img src="../images/kiosk-logo.png" alt="Logo">
+            <h1>How would you like your order?</h1>
+        </div>
+
+        <div class="main">
+            <p class="question">Choose your order type</p>
+            <div class="options">
+                <button class="option-btn eat-in" id="eatIn">
+                    <span class="icon">🪴</span>
+                    <span class="label">Eat In</span>
+                    <span class="sublabel">Dine with us in the restaurant</span>
+                </button>
+                <button class="option-btn takeout" id="takeout">
+                    <span class="icon">🥡</span>
+                    <span class="label">Take Out</span>
+                    <span class="sublabel">Pick up your order to go</span>
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function handleChoice(btn, orderType) {
+            btn.addEventListener('click', (e) => {
+                // Ripple effect
+                const ripple = document.createElement('div');
+                ripple.className = 'ripple';
+                const rect = btn.getBoundingClientRect();
+                const size = 80;
+                ripple.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - rect.left - size/2}px;top:${e.clientY - rect.top - size/2}px`;
+                btn.appendChild(ripple);
+                btn.classList.add('tapped');
+
+                // Save order type for product-screen
+                sessionStorage.setItem('order_type', orderType);
+
+                // product-screen.php is in /products/ — same level as /orders/ → go up then down
+                setTimeout(() => window.location.href = '../products/product-screen.php', 320);
+            });
+        }
+
+        handleChoice(document.getElementById('eatIn'),  'eat_in');
+        handleChoice(document.getElementById('takeout'), 'takeout');
+    </script>
+</body>
+</html>

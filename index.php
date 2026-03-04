@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kiosk Start</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
     <style>
         #flash {
             position: fixed;
@@ -37,11 +37,8 @@
             <img src="images/kiosk-logo.png" alt="Logo" class="logo-main">
             <p class="tap-text">Touch screen to start</p>
         </div>
-        <div class="brand-bar">
-            <span>Happy Herbivore &mdash; Fresh &amp; Plant-Based</span>
-        </div>
     </div>
 
-    <script src="kiosk-start.js"></script>
+    <script src="js/kiosk-start.js"></script>
 </body>
 </html>

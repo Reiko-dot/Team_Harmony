@@ -1,4 +1,13 @@
+@font-face {
+    font-family: 'RenosRough';
+    src: url('../fonts/RenosRough-Regular.otf') format('opentype'),
+         url('../fonts/RenosRough-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
+    font-family: 'RenosRough', Arial, sans-serif;
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -18,7 +27,7 @@ body {
     height: 100vh;
     position: relative;
     overflow: hidden;
-    background: #0b2b16;
+    background: #0d2e18;
     box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
     cursor: pointer;
     user-select: none;
@@ -64,7 +73,7 @@ body {
     position: absolute;
     inset: 0;
     z-index: 1;
-    background: linear-gradient(to bottom, rgba(159, 255, 193, 0.5) 0%, rgba(11, 43, 22, 0.2) 40%, rgba(11, 43, 22, 0.8) 100%);
+    background: linear-gradient(to bottom, rgba(255, 142, 37, 0.5) 0%, rgba(11, 43, 22, 0.2) 40%, rgba(11, 43, 22, 0.8) 100%);
 }
 
 .content {
@@ -74,9 +83,11 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 36px;
-    padding: 40px;
+    padding-top: 80px;
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
 .logo-main {
@@ -128,24 +139,6 @@ body {
     }
 }
 
-.brand-bar {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 3;
-    background: #8cc63f;
-    padding: 16px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
 
-.brand-bar span {
-    font-family: Arial, sans-serif;
-    font-size: 14px;
-    font-weight: bold;
-    color: #0b2b16;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-}
+
+

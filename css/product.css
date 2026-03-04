@@ -1,6 +1,14 @@
+@font-face {
+    font-family: 'RenosRough';
+    src: url('../fonts/RenosRough-Regular.otf') format('opentype'),
+         url('../fonts/RenosRough-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 * {
     box-sizing: border-box;
-    font-family: Arial, sans-serif;
+    font-family: 'RenosRough', Arial, sans-serif;
 }
 
 body {
@@ -469,5 +477,250 @@ body {
     text-align: center;
     color: #aaa;
     font-size: 15px;
+    padding: 40px 0;
+}
+
+
+/* ─── Product Detail Modal ───────────────────────────────── */
+
+#product-modal {
+    position: absolute;
+    inset: 0;
+    z-index: 200;
+}
+
+.pmodal-overlay {
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.pmodal-box {
+    background: white;
+    width: 100%;
+    border-radius: 24px;
+    max-height: 88%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: scale(0.85);
+    opacity: 0;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease;
+}
+
+.pmodal-box.visible {
+    transform: scale(1);
+    opacity: 1;
+}
+
+/* Image area */
+.pmodal-img-wrap {
+    position: relative;
+    width: 100%;
+    height: 220px;
+    flex-shrink: 0;
+    background: #f0f0f0;
+}
+
+.pmodal-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.pmodal-img-placeholder {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #e8f5d0, #c8e89a);
+}
+
+/* Close X button */
+.pmodal-close-x {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(0,0,0,0.45);
+    color: white;
+    border: none;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.pmodal-close-x:hover { background: rgba(0,0,0,0.65); }
+
+/* Scrollable body */
+.pmodal-body {
+    padding: 20px 20px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    overflow-y: auto;
+}
+
+/* Category label */
+.pmodal-category {
+    font-size: 12px;
+    font-weight: bold;
+    color: #8cc63f;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+}
+
+/* Name + price row */
+.pmodal-title-row {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.pmodal-name {
+    font-size: 22px;
+    font-weight: 900;
+    color: #0b2b16;
+    margin: 0;
+    line-height: 1.2;
+    flex: 1;
+}
+
+.pmodal-price {
+    font-size: 22px;
+    font-weight: 900;
+    color: #ff7e26;
+    white-space: nowrap;
+}
+
+/* Pills row */
+.pmodal-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.pmodal-pill {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 12px;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.pmodal-pill.dietary.vegan { background: #e2f497; color: #0b2b16; }
+.pmodal-pill.dietary.veg   { background: #fff0cc; color: #7a5500; }
+.pmodal-pill.kcal          { background: #f5f5f5; color: #555; }
+
+/* Description */
+.pmodal-description {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Already in cart note */
+.pmodal-already-added {
+    font-size: 13px;
+    color: #8cc63f;
+    font-weight: bold;
+    margin: 0;
+    background: #f0fbe0;
+    padding: 8px 14px;
+    border-radius: 8px;
+}
+
+/* Qty selector */
+.pmodal-qty-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    background: #f5f5f5;
+    border-radius: 50px;
+    padding: 6px;
+    align-self: center;
+    width: 160px;
+    justify-content: space-between;
+}
+
+.pmodal-qty-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
+    background: white;
+    font-size: 22px;
+    font-weight: bold;
+    color: #0b2b16;
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+}
+
+.pmodal-qty-btn:hover  { background: #e2f497; }
+.pmodal-qty-btn:active { transform: scale(0.93); }
+
+.pmodal-qty-display {
+    font-size: 22px;
+    font-weight: 900;
+    color: #0b2b16;
+    min-width: 36px;
+    text-align: center;
+}
+
+/* Add to cart button */
+.pmodal-add-btn {
+    width: 100%;
+    padding: 16px;
+    background: #0b2b16;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: opacity 0.15s, transform 0.1s;
+    margin-top: 4px;
+}
+
+.pmodal-add-btn:hover  { opacity: 0.88; }
+.pmodal-add-btn:active { transform: scale(0.98); }
+
+/* dietary badges on product grid cards */
+.dietary-badge {
+    position: absolute;
+    top: 6px;
+    left: 6px;
+    font-size: 10px;
+    font-weight: bold;
+    padding: 2px 7px;
+    border-radius: 10px;
+    pointer-events: none;
+}
+.dietary-badge.vegan { background: #e2f497; color: #0b2b16; }
+.dietary-badge.veg   { background: #fff0cc; color: #7a5500; }
+
+/* Loading message */
+.loading-msg {
+    grid-column: 1 / -1;
+    text-align: center;
+    color: #aaa;
+    font-size: 16px;
     padding: 40px 0;
 }

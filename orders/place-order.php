@@ -1,19 +1,8 @@
 <?php
 // ============================================================
-//  place-order.php — Creates an order in the DB
-//  Called by main.js when user clicks "Place Order"
-//
-//  POST body (JSON):
-//  {
-//    "order_type": "eat_in" | "takeout",
-//    "items": [
-//      { "product_id": 1, "quantity": 2 },
-//      { "product_id": 3, "quantity": 1 }
-//    ]
-//  }
-//
-//  Returns:
-//  { "success": true, "order_number": "HH-20260302-001", "total": "€ 11.30" }
+//  place-order.php
+//  Lives at: TEAM_HARMONY/orders/place-order.php
+//  db.php is at root → require __DIR__ . '/../db.php'
 // ============================================================
 
 header('Content-Type: application/json');
@@ -26,9 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     die(json_encode(['success' => false, 'error' => 'POST only']));
 }
 
-require_once 'db.php';
+require_once __DIR__ . '/../db.php';    // orders/ → up one level to root
 
-$body = json_decode(file_get_contents('php://input'), true);
+$body       = json_decode(file_get_contents('php://input'), true);
 $order_type = $body['order_type'] ?? null;
 $items      = $body['items']      ?? [];
 
@@ -46,8 +35,8 @@ try {
     $pdo = getDB();
     $pdo->beginTransaction();
 
-    // 1. Generate order number: HH-YYYYMMDD-NNN (resets daily)
-    $today = date('Y-m-d');
+    // 1. Generate order number HH-YYYYMMDD-NNN
+    $today       = date('Y-m-d');
     $dateCompact = date('Ymd');
 
     $pdo->prepare("
@@ -62,8 +51,8 @@ try {
 
     $order_number = 'HH-' . $dateCompact . '-' . str_pad($counter, 3, '0', STR_PAD_LEFT);
 
-    // 2. Fetch real prices from DB (never trust client prices)
-    $productIds = array_column($items, 'product_id');
+    // 2. Fetch real prices from DB
+    $productIds   = array_column($items, 'product_id');
     $placeholders = implode(',', array_fill(0, count($productIds), '?'));
 
     $stmt = $pdo->prepare("
@@ -89,18 +78,12 @@ try {
     }
 
     // 4. Insert order
-    $stmt = $pdo->prepare("
-        INSERT INTO orders (order_number, order_type, total_price)
-        VALUES (?, ?, ?)
-    ");
+    $stmt = $pdo->prepare("INSERT INTO orders (order_number, order_type, total_price) VALUES (?, ?, ?)");
     $stmt->execute([$order_number, $order_type, number_format($total, 2, '.', '')]);
     $orderId = $pdo->lastInsertId();
 
     // 5. Insert order items
-    $stmt = $pdo->prepare("
-        INSERT INTO order_items (order_id, product_id, name, price, quantity)
-        VALUES (?, ?, ?, ?, ?)
-    ");
+    $stmt = $pdo->prepare("INSERT INTO order_items (order_id, product_id, name, price, quantity) VALUES (?, ?, ?, ?, ?)");
     foreach ($items as $item) {
         $p = $productMap[$item['product_id']];
         $stmt->execute([$orderId, $item['product_id'], $p['name'], $p['price'], $item['quantity']]);

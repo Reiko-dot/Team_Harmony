@@ -1,4 +1,5 @@
-// kiosk-start.js — only for index.php (start screen)
+// js/kiosk-start.js — only for index.php (start screen)
+
 
 // --- Background image slideshow ---
 const slides = document.querySelectorAll('.background-slider img');
@@ -13,13 +14,13 @@ if (slides.length > 1) {
 }
 
 // --- Tap/click anywhere to go to order type screen ---
-const wrap = document.getElementById('kioskWrap');
+const wrap  = document.getElementById('kioskWrap');
 const flash = document.getElementById('flash');
 
 wrap.addEventListener('click', function (e) {
-    // Ripple effect (uses .ripple from style.css)
-    const rect = wrap.getBoundingClientRect();
-    const size = 120;
+    // Ripple effect
+    const rect   = wrap.getBoundingClientRect();
+    const size   = 120;
     const ripple = document.createElement('div');
     ripple.className = 'ripple';
     ripple.style.width  = size + 'px';
@@ -30,6 +31,7 @@ wrap.addEventListener('click', function (e) {
     setTimeout(() => ripple.remove(), 600);
 
     // Flash white then navigate
+    // order-type.php is in /orders/ — one level down from root
     flash.style.opacity = '1';
-    setTimeout(() => window.location.href = 'order-type.php', 300);
+    setTimeout(() => window.location.href = 'orders/order-type.php', 300);
 });

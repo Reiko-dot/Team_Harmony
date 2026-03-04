@@ -1,7 +1,7 @@
 <?php
 // ============================================================
 //  db.php — PDO Database Connection
-//  Include this in every PHP file that needs the database
+//  Lives at root: TEAM_HARMONY/db.php
 // ============================================================
 
 define('DB_HOST', '127.0.0.1');
