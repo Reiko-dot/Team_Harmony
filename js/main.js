@@ -1,32 +1,203 @@
-// js/main.js
-// Lives at:           TEAM_HARMONY/js/main.js
-// Loaded by:          TEAM_HARMONY/products/product-screen.php
-//
-// Path reference point = products/product-screen.php (the HTML page)
-//   ../get-products.php          → root
-//   ../images/                   → root/images/
-//   ../orders/place-order.php    → orders folder
-//   ../index.php                 → root (back to start)
+// js/main.js — Full multilingual support (NL / EN / DE)
+
+// ── Translations ───────────────────────────────────────────
+const TX = {
+    nl: {
+        // Footer
+        orderOverview:   'Besteloverzicht',
+        total:           'Totaal',
+        clearBtn:        'WISSEN',
+        cartBtn:         'WINKELWAGEN',
+        cartBtnCount:    (n) => `WINKELWAGEN (${n})`,
+        itemsInOrder:    (n) => `${n} item${n > 1 ? 's' : ''} in bestelling`,
+
+        // Sidebar categories
+        breakfast:       'Ontbijt',
+        lunch:           'Lunch & Diner',
+        snacks:          'Handhelds',
+        desserts:        'Bijgerechten',
+        drinks:          'Dranken',
+        specials:        'Signature Dips',
+
+        // Category names (for modal pills)
+        catNames: {
+            drinks: 'Dranken', breakfast: 'Ontbijt', lunch: 'Lunch & Diner',
+            snacks: 'Handhelds', desserts: 'Bijgerechten', specials: 'Signature Dips'
+        },
+
+        // Dietary
+        vegan:           'Veganistisch',
+        vegetarian:      'Vegetarisch',
+
+        // Loading
+        loading:         'Laden...',
+        noProducts:      'Geen producten gevonden.',
+        loadFailed:      'Laden mislukt.',
+
+        // Product modal
+        alreadyInCart:   (n) => `✓ Al ${n}× in winkelwagen`,
+        addToCart:       'Toevoegen',
+
+        // Cart modal
+        cartTitle:       '🛒 Jouw Bestelling',
+        emptyCart:       '🌿 Nog geen items toegevoegd.',
+        each:            'per stuk',
+        continueShopping:'Verder winkelen',
+        placeOrder:      'Bestelling plaatsen',
+        placingOrder:    'Bestelling plaatsen...',
+        backToMenu:      '🏠 Terug naar menu',
+        continueOrdering:'Verder bestellen',
+
+        // Clear modal
+        clearTitle:      '🗑️ Bestelling wissen?',
+        clearBody:       'Weet je zeker dat je alle items wilt verwijderen? Dit kan niet ongedaan worden gemaakt.',
+        keepItems:       'Items bewaren',
+        clearOrder:      'Bestelling wissen',
+
+        // Order confirmed
+        orderPlaced:     'Bestelling geplaatst!',
+        beingPrepared:   'Je eten wordt bereid. 🌿',
+        yourOrderNumber: 'Jouw bestelnummer',
+        callWhenReady:   'We roepen je nummer als het klaar is',
+    },
+
+    en: {
+        orderOverview:   'Order overview',
+        total:           'Total',
+        clearBtn:        'CLEAR ORDER',
+        cartBtn:         'CART',
+        cartBtnCount:    (n) => `CART (${n})`,
+        itemsInOrder:    (n) => `${n} item${n > 1 ? 's' : ''} in order`,
+
+        breakfast:       'Breakfast',
+        lunch:           'Lunch & Dinner',
+        snacks:          'Handhelds',
+        desserts:        'Sides & Small Plates',
+        drinks:          'Drinks',
+        specials:        'Signature Dips',
+
+        catNames: {
+            drinks: 'Drinks', breakfast: 'Breakfast', lunch: 'Lunch & Dinner',
+            snacks: 'Handhelds', desserts: 'Sides & Small Plates', specials: 'Signature Dips'
+        },
+
+        vegan:           'Vegan',
+        vegetarian:      'Vegetarian',
+
+        loading:         'Loading...',
+        noProducts:      'No products found.',
+        loadFailed:      'Failed to load products.',
+
+        alreadyInCart:   (n) => `✓ Already ${n}× in cart`,
+        addToCart:       'Add to Cart',
+
+        cartTitle:       '🛒 Your Order',
+        emptyCart:       '🌿 No items added yet.',
+        each:            'each',
+        continueShopping:'Continue',
+        placeOrder:      'Place Order',
+        placingOrder:    'Placing order...',
+        backToMenu:      '🏠 Back to Menu',
+        continueOrdering:'Continue ordering',
+
+        clearTitle:      '🗑️ Clear Order?',
+        clearBody:       'Are you sure you want to remove all items? This cannot be undone.',
+        keepItems:       'Keep Items',
+        clearOrder:      'Clear Order',
+
+        orderPlaced:     'Order Placed!',
+        beingPrepared:   'Your food is being prepared. 🌿',
+        yourOrderNumber: 'Your order number',
+        callWhenReady:   "We'll call your number when it's ready",
+    },
+
+    de: {
+        orderOverview:   'Bestellübersicht',
+        total:           'Gesamt',
+        clearBtn:        'LÖSCHEN',
+        cartBtn:         'WARENKORB',
+        cartBtnCount:    (n) => `WARENKORB (${n})`,
+        itemsInOrder:    (n) => `${n} Artikel in der Bestellung`,
+
+        breakfast:       'Frühstück',
+        lunch:           'Mittagessen',
+        snacks:          'Snacks',
+        desserts:        'Beilagen',
+        drinks:          'Getränke',
+        specials:        'Signature Dips',
+
+        catNames: {
+            drinks: 'Getränke', breakfast: 'Frühstück', lunch: 'Mittagessen',
+            snacks: 'Snacks', desserts: 'Beilagen', specials: 'Signature Dips'
+        },
+
+        vegan:           'Vegan',
+        vegetarian:      'Vegetarisch',
+
+        loading:         'Laden...',
+        noProducts:      'Keine Produkte gefunden.',
+        loadFailed:      'Laden fehlgeschlagen.',
+
+        alreadyInCart:   (n) => `✓ Bereits ${n}× im Warenkorb`,
+        addToCart:       'In den Warenkorb',
+
+        cartTitle:       '🛒 Ihre Bestellung',
+        emptyCart:       '🌿 Noch keine Artikel hinzugefügt.',
+        each:            'pro Stück',
+        continueShopping:'Weiter einkaufen',
+        placeOrder:      'Bestellung aufgeben',
+        placingOrder:    'Bestellung wird aufgegeben...',
+        backToMenu:      '🏠 Zurück zum Menü',
+        continueOrdering:'Weiter bestellen',
+
+        clearTitle:      '🗑️ Bestellung löschen?',
+        clearBody:       'Möchten Sie alle Artikel entfernen? Dies kann nicht rückgängig gemacht werden.',
+        keepItems:       'Artikel behalten',
+        clearOrder:      'Bestellung löschen',
+
+        orderPlaced:     'Bestellung aufgegeben!',
+        beingPrepared:   'Ihr Essen wird zubereitet. 🌿',
+        yourOrderNumber: 'Ihre Bestellnummer',
+        callWhenReady:   'Wir rufen Ihre Nummer auf, wenn es fertig ist',
+    }
+};
 
 document.addEventListener('DOMContentLoaded', () => {
+    const lang = sessionStorage.getItem('lang') || 'nl';
+    const t    = TX[lang] || TX.nl;
+
     const buttons   = document.querySelectorAll('.category-btn');
     const container = document.getElementById('product-container');
+    let cart = {};
 
-    let cart            = {};
-    let currentCategory = 'breakfast';
+    // ── Translate static UI ────────────────────────────────────
+    const categoryLabels = {
+        breakfast: t.breakfast, lunch: t.lunch, snacks: t.snacks,
+        desserts:  t.desserts,  drinks: t.drinks, specials: t.specials
+    };
+
+    buttons.forEach(btn => {
+        const cat = btn.getAttribute('data-category');
+        if (categoryLabels[cat]) btn.innerHTML = categoryLabels[cat].replace(' & ', ' &<br>');
+    });
+
+    document.querySelector('.clear-btn').textContent = t.clearBtn;
+    document.querySelector('.order-btn').textContent = t.cartBtn;
+    document.querySelector('.total-label').textContent = t.total;
+
+    const orderSpan = document.querySelector('.info-row span:first-child');
+    orderSpan.textContent = t.orderOverview;
 
     // ── Load products ──────────────────────────────────────────
     async function loadProducts(category) {
-        container.innerHTML = '<div class="loading-msg">Loading...</div>';
-        currentCategory = category;
+        container.innerHTML = `<div class="loading-msg">${t.loading}</div>`;
 
         try {
-            // get-products.php is at root, page is in /products/ → ../
             const res  = await fetch(`../get-products.php?category=${category}`);
             const json = await res.json();
 
             if (!json.success || !json.data.length) {
-                container.innerHTML = '<div class="loading-msg">No products found.</div>';
+                container.innerHTML = `<div class="loading-msg">${t.noProducts}</div>`;
                 return;
             }
 
@@ -39,20 +210,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 div.dataset.name  = product.name;
                 div.dataset.price = product.price;
 
-                // images/ is at root, page is in /products/ → ../images/
                 const imgHTML = product.image_file
                     ? `<img src="../images/${product.image_file}" alt="${product.name}">`
                     : `<div class="product-placeholder"></div>`;
 
                 const badge = product.dietary_code === 'VG'
-                    ? '<span class="dietary-badge vegan">VG</span>'
-                    : '<span class="dietary-badge veg">V</span>';
+                    ? `<span class="dietary-badge vegan">VG</span>`
+                    : `<span class="dietary-badge veg">V</span>`;
 
                 div.innerHTML = `
                     ${imgHTML}
                     <div class="product-details">
                         <span class="name">${product.name}</span>
-                        <span class="price">€ ${parseFloat(product.price).toFixed(2)}</span>
+                        <span class="price">€${parseFloat(product.price).toFixed(2)}</span>
                     </div>
                     ${badge}`;
 
@@ -61,7 +231,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
         } catch (err) {
-            container.innerHTML = '<div class="loading-msg">Failed to load products.</div>';
+            container.innerHTML = `<div class="loading-msg">${t.loadFailed}</div>`;
             console.error(err);
         }
     }
@@ -89,20 +259,15 @@ document.addEventListener('DOMContentLoaded', () => {
             ? `<img src="../images/${product.image_file}" alt="${product.name}" class="pmodal-img">`
             : `<div class="pmodal-img-placeholder"></div>`;
 
-        const dietaryLabel = product.dietary_code === 'VG' ? 'Vegan' : 'Vegetarian';
+        const dietaryLabel = product.dietary_code === 'VG' ? t.vegan : t.vegetarian;
         const dietaryClass = product.dietary_code === 'VG' ? 'vegan' : 'veg';
         const kcalHTML     = product.kcal > 0
             ? `<span class="pmodal-pill kcal">🔥 ${product.kcal} kcal</span>`
             : '';
 
-        const currentQty = cart[product.name] ? cart[product.name].qty : 0;
-        const price      = parseFloat(product.price);
-
-        const categoryNames = {
-            drinks: 'Drinks', breakfast: 'Breakfast', lunch: 'Lunch & Dinner',
-            snacks: 'Handhelds', desserts: 'Sides & Small Plates', specials: 'Signature Dips'
-        };
-        const categoryLabel = categoryNames[product.category_slug] || product.category_slug;
+        const currentQty   = cart[product.name] ? cart[product.name].qty : 0;
+        const price        = parseFloat(product.price);
+        const categoryLabel = t.catNames[product.category_slug] || product.category_slug;
 
         modal.innerHTML = `
             <div class="modal-overlay pmodal-overlay">
@@ -122,14 +287,14 @@ document.addEventListener('DOMContentLoaded', () => {
                             ${kcalHTML}
                         </div>
                         <p class="pmodal-description">${product.description || ''}</p>
-                        ${currentQty > 0 ? `<p class="pmodal-already-added">✓ Already ${currentQty}× in cart</p>` : ''}
+                        ${currentQty > 0 ? `<p class="pmodal-already-added">${t.alreadyInCart(currentQty)}</p>` : ''}
                         <div class="pmodal-qty-row">
                             <button class="pmodal-qty-btn" id="pmodal-minus">−</button>
                             <span class="pmodal-qty-display" id="pmodal-qty">1</span>
                             <button class="pmodal-qty-btn" id="pmodal-plus">+</button>
                         </div>
                         <button class="pmodal-add-btn" id="pmodal-add">
-                            Add to Cart &nbsp;·&nbsp; <span id="pmodal-add-price">€ ${price.toFixed(2)}</span>
+                            ${t.addToCart} &nbsp;·&nbsp; <span id="pmodal-add-price">€ ${price.toFixed(2)}</span>
                         </button>
                     </div>
                 </div>
@@ -161,7 +326,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         modal.querySelector('#pmodal-add').addEventListener('click', () => {
             const name = product.name;
-            // Store image path relative to the HTML page (/products/)
             const img  = product.image_file ? `../images/${product.image_file}` : null;
             const id   = product.id;
 
@@ -170,7 +334,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 cart[name] = {
                     price, qty, img, id,
-                    category:    categoryNames[product.category_slug] || product.category_slug,
+                    category:    t.catNames[product.category_slug] || product.category_slug,
                     dietaryCode: product.dietary_code,
                     kcal:        product.kcal || 0
                 };
@@ -196,13 +360,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const orderSpan = document.querySelector('.info-row span:first-child');
         orderSpan.textContent = totalItems > 0
-            ? `${totalItems} item${totalItems > 1 ? 's' : ''} in order`
-            : 'Orderoverview';
+            ? t.itemsInOrder(totalItems)
+            : t.orderOverview;
 
-        document.querySelector('.order-btn').textContent = totalItems > 0 ? `CART (${totalItems})` : 'CART';
+        document.querySelector('.order-btn').textContent = totalItems > 0
+            ? t.cartBtnCount(totalItems)
+            : t.cartBtn;
     }
 
-    // ── Clear order ────────────────────────────────────────────
+    // ── Clear order modal ──────────────────────────────────────
     document.querySelector('.clear-btn').addEventListener('click', () => {
         if (Object.keys(cart).length === 0) return;
         showClearConfirmModal();
@@ -217,11 +383,11 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.innerHTML = `
             <div class="modal-overlay">
                 <div class="modal-box clear-confirm-box" style="height:auto;max-height:none;gap:16px;">
-                    <div class="modal-header"><h2>🗑️ Clear Order?</h2></div>
-                    <p style="color:#555;font-size:16px;margin:0;">Are you sure you want to remove all items? This cannot be undone.</p>
+                    <div class="modal-header"><h2>${t.clearTitle}</h2></div>
+                    <p style="color:#555;font-size:16px;margin:0;">${t.clearBody}</p>
                     <div class="modal-actions">
-                        <button class="modal-close-btn" id="clear-cancel-btn">Keep Items</button>
-                        <button class="modal-confirm-btn" id="clear-proceed-btn" style="background:#c0392b;">Clear Order</button>
+                        <button class="modal-close-btn" id="clear-cancel-btn">${t.keepItems}</button>
+                        <button class="modal-confirm-btn" id="clear-proceed-btn" style="background:#c0392b;">${t.clearOrder}</button>
                     </div>
                 </div>
             </div>`;
@@ -255,18 +421,17 @@ document.addEventListener('DOMContentLoaded', () => {
             modal.innerHTML = `
                 <div class="modal-overlay">
                     <div class="modal-box">
-                        <h2>Your Cart</h2>
-                        <p class="empty-msg">🌿 No items added yet.</p>
+                        <h2>${t.cartTitle}</h2>
+                        <p class="empty-msg">${t.emptyCart}</p>
                         <div class="modal-actions">
-                            <button class="modal-close-btn">Close</button>
-                            <button class="modal-menu-btn" onclick="window.location.href='../index.php'">🏠 Menu</button>
+                            <button class="modal-close-btn">${t.continueShopping}</button>
                         </div>
                     </div>
                 </div>`;
         } else {
             const total     = items.reduce((s, [, v]) => s + v.price * v.qty, 0);
             const itemsHTML = items.map(([name, { price, qty, img, category, dietaryCode, kcal }]) => {
-                const dietaryLabel = dietaryCode === 'VG' ? 'Vegan' : 'Vegetarian';
+                const dietaryLabel = dietaryCode === 'VG' ? t.vegan : t.vegetarian;
                 const dietaryClass = dietaryCode === 'VG' ? 'vegan' : 'veg';
                 const kcalHTML     = kcal > 0 ? `<span class="cart-pill kcal">🔥 ${kcal} kcal</span>` : '';
                 const categoryHTML = category ? `<span class="cart-pill cat">🍽 ${category}</span>` : '';
@@ -280,7 +445,7 @@ document.addEventListener('DOMContentLoaded', () => {
                             <span class="cart-pill dietary ${dietaryClass}">${dietaryLabel}</span>
                             ${kcalHTML}
                         </div>
-                        <span class="cart-item-unit">€ ${price.toFixed(2)} each</span>
+                        <span class="cart-item-unit">€ ${price.toFixed(2)} ${t.each}</span>
                     </div>
                     <div class="cart-item-controls">
                         <button class="qty-btn minus" data-name="${name}">−</button>
@@ -295,17 +460,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="modal-overlay">
                     <div class="modal-box">
                         <div class="modal-header">
-                            <h2>🛒 Your Order</h2>
+                            <h2>${t.cartTitle}</h2>
                             <span class="modal-item-count">${items.length} item${items.length > 1 ? 's' : ''}</span>
                         </div>
                         <div class="cart-items-list">${itemsHTML}</div>
                         <div class="cart-total-row">
-                            <span>Total</span>
+                            <span>${t.total}</span>
                             <span class="cart-total-amount">€ ${total.toFixed(2)}</span>
                         </div>
                         <div class="modal-actions">
-                            <button class="modal-close-btn">Continue</button>
-                            <button class="modal-confirm-btn">Place Order</button>
+                            <button class="modal-close-btn">${t.continueShopping}</button>
+                            <button class="modal-confirm-btn">${t.placeOrder}</button>
                         </div>
                     </div>
                 </div>`;
@@ -350,11 +515,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }));
 
         const confirmBtn       = modal.querySelector('.modal-confirm-btn');
-        confirmBtn.textContent = 'Placing order...';
+        confirmBtn.textContent = t.placingOrder;
         confirmBtn.disabled    = true;
 
         try {
-            // place-order.php is in /orders/, page is in /products/ → ../orders/
             const res  = await fetch('../orders/place-order.php', {
                 method:  'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -372,18 +536,18 @@ document.addEventListener('DOMContentLoaded', () => {
                 <div class="modal-overlay">
                     <div class="modal-box confirm-box visible" style="gap:12px;align-items:center;text-align:center;">
                         <div class="checkmark">✓</div>
-                        <h2 style="margin:0;font-size:22px;color:#0b2b16;">Order Placed!</h2>
-                        <p style="margin:0;color:#555;font-size:15px;">Your food is being prepared. 🌿</p>
+                        <h2 style="margin:0;font-size:22px;color:#0b2b16;">${t.orderPlaced}</h2>
+                        <p style="margin:0;color:#555;font-size:15px;">${t.beingPrepared}</p>
                         <div style="background:#f5f5f5;border-radius:16px;padding:18px 32px;margin:4px 0;width:100%;">
-                            <p style="margin:0 0 4px 0;font-size:13px;color:#888;letter-spacing:1px;text-transform:uppercase;font-weight:bold;">Your order number</p>
+                            <p style="margin:0 0 4px 0;font-size:13px;color:#888;letter-spacing:1px;text-transform:uppercase;font-weight:bold;">${t.yourOrderNumber}</p>
                             <p style="margin:0;font-size:64px;font-weight:900;color:#0b2b16;line-height:1;">#${displayNum}</p>
                             <p style="margin:4px 0 0;font-size:12px;color:#aaa;">${json.order_number}</p>
                         </div>
-                        <p style="margin:0;font-size:13px;color:#aaa;">We'll call your number when it's ready</p>
+                        <p style="margin:0;font-size:13px;color:#aaa;">${t.callWhenReady}</p>
                         <div class="modal-actions" style="width:100%;flex-direction:column;gap:10px;margin-top:4px;">
-                            <button class="modal-confirm-btn" id="done-btn" style="width:100%;padding:14px;font-size:16px;">Continue ordering</button>
+                            <button class="modal-confirm-btn" id="done-btn" style="width:100%;padding:14px;font-size:16px;">${t.continueOrdering}</button>
                             <button id="menu-btn" style="width:100%;padding:14px;background:#e2f497;border:none;border-radius:8px;font-weight:bold;font-size:15px;color:#0b2b16;cursor:pointer;">
-                                🏠 Back to Menu
+                                ${t.backToMenu}
                             </button>
                         </div>
                     </div>
@@ -393,11 +557,10 @@ document.addEventListener('DOMContentLoaded', () => {
             updateFooter();
 
             modal.querySelector('#done-btn').addEventListener('click', () => modal.remove());
-            // Back to start screen — page is in /products/ → ../
             modal.querySelector('#menu-btn').addEventListener('click', () => window.location.href = '../index.php');
 
         } catch (err) {
-            confirmBtn.textContent = 'Place Order';
+            confirmBtn.textContent = t.placeOrder;
             confirmBtn.disabled    = false;
             alert('Something went wrong: ' + err.message);
         }

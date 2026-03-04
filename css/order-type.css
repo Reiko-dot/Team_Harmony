@@ -7,116 +7,226 @@
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #222; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
 
-        .kiosk-wrap {
-            aspect-ratio: 9 / 16;
-            height: 100vh;
-            background: white;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 0 40px rgba(0,0,0,0.6);
-            overflow: hidden;
-        }
+body {
+    background: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
 
-        /* Header */
-        .header {
-            background: #8cc63f;
-            padding: 28px 24px 24px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-        }
-        .header img { height: 150px; }
-        .header h1 { font-family: Arial, sans-serif; font-size: 20px; color: #0b2b16; font-weight: bold; letter-spacing: 1px; }
+.kiosk-wrap {
+    aspect-ratio: 9 / 16;
+    height: 100vh;
+    background: white;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 40px rgba(0,0,0,0.7);
+    overflow: hidden;
+}
 
-        /* Main */
-        .main {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 28px;
-            padding: 40px 32px;
-            background: #f9fdf3;
-        }
+/* ── Header ─────────────────────────────────────────────── */
+.header {
+    background: #0b2b16;
+    padding: 36px 20px 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+}
 
-        .question {
-            font-family: Arial, sans-serif;
-            font-size: 28px;
-            font-weight: bold;
-            color: #0b2b16;
-            text-align: center;
-            line-height: 1.3;
-        }
+.header img {
+    height: 180px;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.4));
+}
 
-        .options {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            width: 100%;
-        }
+.header h1 {
+    font-family: 'RenosRough', Arial, sans-serif;
+    font-size: 30px;
+    color: #c8e87a;
+    font-weight: normal;
+    letter-spacing: 1px;
+    text-align: center;
+}
 
-        .option-btn {
-            width: 100%;
-            padding: 36px 24px;
-            border: 3px solid #8cc63f;
-            border-radius: 20px;
-            background: white;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 12px;
-            transition: all 0.18s ease;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-            position: relative;
-            overflow: hidden;
-        }
+/* ── Main area ───────────────────────────────────────────── */
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 40px;
+    padding: 120px 20px 20px;
+    background: #f4fde8;
+}
 
-        .option-btn:active, .option-btn.tapped {
-            transform: scale(0.97);
-            background: #e2f497;
-            border-color: #0b2b16;
-        }
+.question {
+    font-family: 'RenosRough', Arial, sans-serif;
+    font-size: 22px;
+    font-weight: normal;
+    color: #0b2b16;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
 
-        .option-btn .icon { font-size: 56px; }
-        .option-btn .label {
-            font-family: Arial, sans-serif;
-            font-size: 26px;
-            font-weight: bold;
-            color: #0b2b16;
-        }
-        .option-btn .sublabel {
-            font-family: Arial, sans-serif;
-            font-size: 15px;
-            color: #666;
-        }
+/* ── Two-column button grid ──────────────────────────────── */
+.options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    width: 72%;
+}
 
-        .option-btn.eat-in  { border-color: #8cc63f; }
-        .option-btn.takeout { border-color: #ff7e26; }
-        .option-btn.takeout .label { color: #cc5500; }
-        .option-btn.takeout:active, .option-btn.takeout.tapped { background: #fff0e0; border-color: #ff7e26; }
+/* ── Base button ─────────────────────────────────────────── */
+.option-btn {
+    position: relative;
+    overflow: hidden;
+    border: none;
+    border-radius: 24px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0;
+    aspect-ratio: 1 / 1;
+}
 
-        /* Ripple */
-        .ripple {
-            position: absolute; border-radius: 50%;
-            background: rgba(140, 198, 63, 0.35);
-            transform: scale(0); pointer-events: none;
-            animation: rippleAnim 0.5s ease-out forwards;
-        }
-        .takeout .ripple { background: rgba(255, 126, 38, 0.3); }
-        @keyframes rippleAnim { to { transform: scale(8); opacity: 0; } }
+.option-btn:nth-child(1) { animation-delay: 0.05s; }
+.option-btn:nth-child(2) { animation-delay: 0.15s; }
 
-        /* Footer */
-        .footer {
-            background: #8cc63f;
-            padding: 16px 24px;
-            display: flex;
-            justify-content: center;
-        }
-        .footer span { font-family: Arial, sans-serif; font-size: 13px; font-weight: bold; color: #0b2b16; letter-spacing: 1px; text-transform: uppercase; }
-    
+@keyframes cardIn {
+    from { opacity: 0; transform: scale(0.82) translateY(20px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0);    }
+}
+
+/* Eat In — green theme */
+.option-btn.eat-in {
+    background: linear-gradient(145deg, #7ec820 0%, #5aab00 100%);
+    box-shadow: 0 8px 28px rgba(90,171,0,0.35), 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Take Out — orange theme */
+.option-btn.takeout {
+    background: linear-gradient(145deg, #ff8c2a 0%, #e06000 100%);
+    box-shadow: 0 8px 28px rgba(224,96,0,0.35), 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Hover lift */
+.option-btn.eat-in:hover {
+    transform: scale(1.04) translateY(-3px);
+    box-shadow: 0 14px 36px rgba(90,171,0,0.45);
+}
+.option-btn.takeout:hover {
+    transform: scale(1.04) translateY(-3px);
+    box-shadow: 0 14px 36px rgba(224,96,0,0.45);
+}
+
+/* Press */
+.option-btn:active,
+.option-btn.tapped {
+    transform: scale(0.96) translateY(2px) !important;
+}
+
+/* ── Animated glow blob behind icon ─────────────────────── */
+.btn-glow {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    top: -30px;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    animation: blobPulse 3s ease-in-out infinite;
+}
+
+.eat-glow  { background: radial-gradient(circle, rgba(212,255,100,0.55) 0%, transparent 70%); }
+.take-glow { background: radial-gradient(circle, rgba(255,220,120,0.55) 0%, transparent 70%); }
+
+@keyframes blobPulse {
+    0%, 100% { transform: translateX(-50%) scale(1);    opacity: 0.7; }
+    50%       { transform: translateX(-50%) scale(1.25); opacity: 1;   }
+}
+
+/* ── Icon ────────────────────────────────────────────────── */
+.option-btn .icon {
+    font-size: 72px;
+    line-height: 1;
+    position: relative;
+    z-index: 1;
+    filter: drop-shadow(0 3px 8px rgba(0,0,0,0.2));
+    transition: transform 0.3s ease;
+}
+
+.option-btn:hover .icon { transform: scale(1.12) rotate(-4deg); }
+
+/* ── Labels ──────────────────────────────────────────────── */
+.option-btn .label {
+    font-family: 'RenosRough', Arial, sans-serif;
+    font-size: 32px;
+    font-weight: normal;
+    color: white;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    letter-spacing: 1px;
+    position: relative;
+    z-index: 1;
+}
+
+.option-btn .sublabel {
+    font-family: Arial, sans-serif;
+    font-size: 15px;
+    color: rgba(255,255,255,0.82);
+    text-align: center;
+    line-height: 1.4;
+    position: relative;
+    z-index: 1;
+    max-width: 90%;
+}
+
+/* ── Shimmer stripe on hover ─────────────────────────────── */
+.option-btn::before {
+    content: '';
+    position: absolute;
+    top: -60%;
+    left: -60%;
+    width: 60%;
+    height: 220%;
+    background: rgba(255,255,255,0.18);
+    transform: rotate(25deg) translateX(-100%);
+    transition: transform 0.55s ease;
+    pointer-events: none;
+}
+.option-btn:hover::before { transform: rotate(25deg) translateX(400%); }
+
+/* ── Ripple ──────────────────────────────────────────────── */
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.35);
+    transform: scale(0);
+    pointer-events: none;
+    animation: rippleAnim 0.55s ease-out forwards;
+}
+
+@keyframes rippleAnim {
+    to { transform: scale(8); opacity: 0; }
+}
+
+/* ── Decorative accent dots ──────────────────────────────── */
+.main::before {
+    content: '';
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(140,198,63,0.12) 0%, transparent 70%);
+    top: 30%;
+    left: -60px;
+    pointer-events: none;
+}
