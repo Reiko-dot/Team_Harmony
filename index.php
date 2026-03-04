@@ -24,6 +24,13 @@
         <div class="background-slider">
             <img src="images/acai-bowl.png" class="slide-img-1 active">
             <img src="images/pb-cacao-toast.png" class="slide-img-2">
+            <img src="images/garden-breakfast-wrap.png" class="slide-img-3">
+            <img src="images/falafel-bites.png" class="slide-img-4">
+            <img src="images/citrus-drink.png" class="slide-img-5">
+            <img src="images/dip-avocado.png" class="slide-img-6">
+            <img src="images/teriyaki-tempeh.png" class="slide-img-7">
+            <img src="images/berry-blast.png" class="slide-img-8">
+            <img src="images/chickpea-wrap.png" class="slide-img-9">
         </div>
         <div class="overlay"></div>
         <div class="content">
