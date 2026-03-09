@@ -4,20 +4,20 @@
 const TX = {
     nl: {
         // Footer
-        orderOverview: 'Besteloverzicht',
-        total: 'Totaal',
-        clearBtn: 'WISSEN',
-        cartBtn: 'WINKELWAGEN',
-        cartBtnCount: (n) => `WINKELWAGEN (${n})`,
-        itemsInOrder: (n) => `${n} item${n > 1 ? 's' : ''} in bestelling`,
+        orderOverview:   'Besteloverzicht',
+        total:           'Totaal',
+        clearBtn:        'WISSEN',
+        cartBtn:         'WINKELWAGEN',
+        cartBtnCount:    (n) => `WINKELWAGEN (${n})`,
+        itemsInOrder:    (n) => `${n} item${n > 1 ? 's' : ''} in bestelling`,
 
         // Sidebar categories
-        breakfast: 'Ontbijt',
-        lunch: 'Lunch & Diner',
-        snacks: 'Handhelds',
-        desserts: 'Bijgerechten',
-        drinks: 'Dranken',
-        specials: 'Signature Dips',
+        breakfast:       'Ontbijt',
+        lunch:           'Lunch & Diner',
+        snacks:          'Handhelds',
+        desserts:        'Bijgerechten',
+        drinks:          'Dranken',
+        specials:        'Signature Dips',
 
         // Category names (for modal pills)
         catNames: {
@@ -26,154 +26,154 @@ const TX = {
         },
 
         // Dietary
-        vegan: 'Veganistisch',
-        vegetarian: 'Vegetarisch',
+        vegan:           'Veganistisch',
+        vegetarian:      'Vegetarisch',
 
         // Loading
-        loading: 'Laden...',
-        noProducts: 'Geen producten gevonden.',
-        loadFailed: 'Laden mislukt.',
+        loading:         'Laden...',
+        noProducts:      'Geen producten gevonden.',
+        loadFailed:      'Laden mislukt.',
 
         // Product modal
-        alreadyInCart: (n) => `✓ Al ${n}× in winkelwagen`,
-        addToCart: 'Toevoegen',
+        alreadyInCart:   (n) => `✓ Al ${n}× in winkelwagen`,
+        addToCart:       'Toevoegen',
 
         // Cart modal
-        cartTitle: '🛒 Jouw Bestelling',
-        emptyCart: '🌿 Nog geen items toegevoegd.',
-        each: 'per stuk',
-        continueShopping: 'Verder winkelen',
-        placeOrder: 'Bestelling plaatsen',
-        placingOrder: 'Bestelling plaatsen...',
-        backToMenu: '🏠 Terug naar menu',
-        continueOrdering: 'Verder bestellen',
+        cartTitle:       '🛒 Jouw Bestelling',
+        emptyCart:       '🌿 Nog geen items toegevoegd.',
+        each:            'per stuk',
+        continueShopping:'Verder winkelen',
+        placeOrder:      'Bestelling plaatsen',
+        placingOrder:    'Bestelling plaatsen...',
+        backToMenu:      '🏠 Terug naar menu',
+        continueOrdering:'Verder bestellen',
 
         // Clear modal
-        clearTitle: '🗑️ Bestelling wissen?',
-        clearBody: 'Weet je zeker dat je alle items wilt verwijderen? Dit kan niet ongedaan worden gemaakt.',
-        keepItems: 'Items bewaren',
-        clearOrder: 'Bestelling wissen',
+        clearTitle:      '🗑️ Bestelling wissen?',
+        clearBody:       'Weet je zeker dat je alle items wilt verwijderen? Dit kan niet ongedaan worden gemaakt.',
+        keepItems:       'Items bewaren',
+        clearOrder:      'Bestelling wissen',
 
         // Order confirmed
-        orderPlaced: 'Bestelling geplaatst!',
-        beingPrepared: 'Je eten wordt bereid. 🌿',
+        orderPlaced:     'Bestelling geplaatst!',
+        beingPrepared:   'Je eten wordt bereid. 🌿',
         yourOrderNumber: 'Jouw bestelnummer',
-        callWhenReady: 'We roepen je nummer als het klaar is',
+        callWhenReady:   'We roepen je nummer als het klaar is',
     },
 
     en: {
-        orderOverview: 'Order overview',
-        total: 'Total',
-        clearBtn: 'CLEAR ORDER',
-        cartBtn: 'CART',
-        cartBtnCount: (n) => `CART (${n})`,
-        itemsInOrder: (n) => `${n} item${n > 1 ? 's' : ''} in order`,
+        orderOverview:   'Order overview',
+        total:           'Total',
+        clearBtn:        'CLEAR ORDER',
+        cartBtn:         'CART',
+        cartBtnCount:    (n) => `CART (${n})`,
+        itemsInOrder:    (n) => `${n} item${n > 1 ? 's' : ''} in order`,
 
-        breakfast: 'Breakfast',
-        lunch: 'Lunch & Dinner',
-        snacks: 'Handhelds',
-        desserts: 'Sides & Small Plates',
-        drinks: 'Drinks',
-        specials: 'Signature Dips',
+        breakfast:       'Breakfast',
+        lunch:           'Lunch & Dinner',
+        snacks:          'Handhelds',
+        desserts:        'Sides & Small Plates',
+        drinks:          'Drinks',
+        specials:        'Signature Dips',
 
         catNames: {
             drinks: 'Drinks', breakfast: 'Breakfast', lunch: 'Lunch & Dinner',
             snacks: 'Handhelds', desserts: 'Sides & Small Plates', specials: 'Signature Dips'
         },
 
-        vegan: 'Vegan',
-        vegetarian: 'Vegetarian',
+        vegan:           'Vegan',
+        vegetarian:      'Vegetarian',
 
-        loading: 'Loading...',
-        noProducts: 'No products found.',
-        loadFailed: 'Failed to load products.',
+        loading:         'Loading...',
+        noProducts:      'No products found.',
+        loadFailed:      'Failed to load products.',
 
-        alreadyInCart: (n) => `✓ Already ${n}× in cart`,
-        addToCart: 'Add to Cart',
+        alreadyInCart:   (n) => `✓ Already ${n}× in cart`,
+        addToCart:       'Add to Cart',
 
-        cartTitle: '🛒 Your Order',
-        emptyCart: '🌿 No items added yet.',
-        each: 'each',
-        continueShopping: 'Continue',
-        placeOrder: 'Place Order',
-        placingOrder: 'Placing order...',
-        backToMenu: '🏠 Back to Menu',
-        continueOrdering: 'Continue ordering',
+        cartTitle:       '🛒 Your Order',
+        emptyCart:       '🌿 No items added yet.',
+        each:            'each',
+        continueShopping:'Continue',
+        placeOrder:      'Place Order',
+        placingOrder:    'Placing order...',
+        backToMenu:      '🏠 Back to Menu',
+        continueOrdering:'Continue ordering',
 
-        clearTitle: '🗑️ Clear Order?',
-        clearBody: 'Are you sure you want to remove all items? This cannot be undone.',
-        keepItems: 'Keep Items',
-        clearOrder: 'Clear Order',
+        clearTitle:      '🗑️ Clear Order?',
+        clearBody:       'Are you sure you want to remove all items? This cannot be undone.',
+        keepItems:       'Keep Items',
+        clearOrder:      'Clear Order',
 
-        orderPlaced: 'Order Placed!',
-        beingPrepared: 'Your food is being prepared. 🌿',
+        orderPlaced:     'Order Placed!',
+        beingPrepared:   'Your food is being prepared. 🌿',
         yourOrderNumber: 'Your order number',
-        callWhenReady: "We'll call your number when it's ready",
+        callWhenReady:   "We'll call your number when it's ready",
     },
 
     de: {
-        orderOverview: 'Bestellübersicht',
-        total: 'Gesamt',
-        clearBtn: 'LÖSCHEN',
-        cartBtn: 'WARENKORB',
-        cartBtnCount: (n) => `WARENKORB (${n})`,
-        itemsInOrder: (n) => `${n} Artikel in der Bestellung`,
+        orderOverview:   'Bestellübersicht',
+        total:           'Gesamt',
+        clearBtn:        'LÖSCHEN',
+        cartBtn:         'WARENKORB',
+        cartBtnCount:    (n) => `WARENKORB (${n})`,
+        itemsInOrder:    (n) => `${n} Artikel in der Bestellung`,
 
-        breakfast: 'Frühstück',
-        lunch: 'Mittagessen',
-        snacks: 'Snacks',
-        desserts: 'Beilagen',
-        drinks: 'Getränke',
-        specials: 'Signature Dips',
+        breakfast:       'Frühstück',
+        lunch:           'Mittagessen',
+        snacks:          'Snacks',
+        desserts:        'Beilagen',
+        drinks:          'Getränke',
+        specials:        'Signature Dips',
 
         catNames: {
             drinks: 'Getränke', breakfast: 'Frühstück', lunch: 'Mittagessen',
             snacks: 'Snacks', desserts: 'Beilagen', specials: 'Signature Dips'
         },
 
-        vegan: 'Vegan',
-        vegetarian: 'Vegetarisch',
+        vegan:           'Vegan',
+        vegetarian:      'Vegetarisch',
 
-        loading: 'Laden...',
-        noProducts: 'Keine Produkte gefunden.',
-        loadFailed: 'Laden fehlgeschlagen.',
+        loading:         'Laden...',
+        noProducts:      'Keine Produkte gefunden.',
+        loadFailed:      'Laden fehlgeschlagen.',
 
-        alreadyInCart: (n) => `✓ Bereits ${n}× im Warenkorb`,
-        addToCart: 'In den Warenkorb',
+        alreadyInCart:   (n) => `✓ Bereits ${n}× im Warenkorb`,
+        addToCart:       'In den Warenkorb',
 
-        cartTitle: '🛒 Ihre Bestellung',
-        emptyCart: '🌿 Noch keine Artikel hinzugefügt.',
-        each: 'pro Stück',
-        continueShopping: 'Weiter einkaufen',
-        placeOrder: 'Bestellung aufgeben',
-        placingOrder: 'Bestellung wird aufgegeben...',
-        backToMenu: '🏠 Zurück zum Menü',
-        continueOrdering: 'Weiter bestellen',
+        cartTitle:       '🛒 Ihre Bestellung',
+        emptyCart:       '🌿 Noch keine Artikel hinzugefügt.',
+        each:            'pro Stück',
+        continueShopping:'Weiter einkaufen',
+        placeOrder:      'Bestellung aufgeben',
+        placingOrder:    'Bestellung wird aufgegeben...',
+        backToMenu:      '🏠 Zurück zum Menü',
+        continueOrdering:'Weiter bestellen',
 
-        clearTitle: '🗑️ Bestellung löschen?',
-        clearBody: 'Möchten Sie alle Artikel entfernen? Dies kann nicht rückgängig gemacht werden.',
-        keepItems: 'Artikel behalten',
-        clearOrder: 'Bestellung löschen',
+        clearTitle:      '🗑️ Bestellung löschen?',
+        clearBody:       'Möchten Sie alle Artikel entfernen? Dies kann nicht rückgängig gemacht werden.',
+        keepItems:       'Artikel behalten',
+        clearOrder:      'Bestellung löschen',
 
-        orderPlaced: 'Bestellung aufgegeben!',
-        beingPrepared: 'Ihr Essen wird zubereitet. 🌿',
+        orderPlaced:     'Bestellung aufgegeben!',
+        beingPrepared:   'Ihr Essen wird zubereitet. 🌿',
         yourOrderNumber: 'Ihre Bestellnummer',
-        callWhenReady: 'Wir rufen Ihre Nummer auf, wenn es fertig ist',
+        callWhenReady:   'Wir rufen Ihre Nummer auf, wenn es fertig ist',
     }
 };
 
 document.addEventListener('DOMContentLoaded', () => {
     const lang = sessionStorage.getItem('lang') || 'nl';
-    const t = TX[lang] || TX.nl;
+    const t    = TX[lang] || TX.nl;
 
-    const buttons = document.querySelectorAll('.category-btn');
+    const buttons   = document.querySelectorAll('.category-btn');
     const container = document.getElementById('product-container');
     let cart = {};
 
     // ── Translate static UI ────────────────────────────────────
     const categoryLabels = {
         breakfast: t.breakfast, lunch: t.lunch, snacks: t.snacks,
-        desserts: t.desserts, drinks: t.drinks, specials: t.specials
+        desserts:  t.desserts,  drinks: t.drinks, specials: t.specials
     };
 
     buttons.forEach(btn => {
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
         container.innerHTML = `<div class="loading-msg">${t.loading}</div>`;
 
         try {
-            const res = await fetch(`../get-products.php?category=${category}`);
+            const res  = await fetch(`../get-products.php?category=${category}`);
             const json = await res.json();
 
             if (!json.success || !json.data.length) {
@@ -206,8 +206,8 @@ document.addEventListener('DOMContentLoaded', () => {
             json.data.forEach(product => {
                 const div = document.createElement('div');
                 div.className = `product-item category-${product.category_slug}`;
-                div.dataset.id = product.id;
-                div.dataset.name = product.name;
+                div.dataset.id    = product.id;
+                div.dataset.name  = product.name;
                 div.dataset.price = product.price;
 
                 const imgHTML = product.image_file
@@ -261,12 +261,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const dietaryLabel = product.dietary_code === 'VG' ? t.vegan : t.vegetarian;
         const dietaryClass = product.dietary_code === 'VG' ? 'vegan' : 'veg';
-        const kcalHTML = product.kcal > 0
+        const kcalHTML     = product.kcal > 0
             ? `<span class="pmodal-pill kcal">🔥 ${product.kcal} kcal</span>`
             : '';
 
-        const currentQty = cart[product.name] ? cart[product.name].qty : 0;
-        const price = parseFloat(product.price);
+        const currentQty   = cart[product.name] ? cart[product.name].qty : 0;
+        const price        = parseFloat(product.price);
         const categoryLabel = t.catNames[product.category_slug] || product.category_slug;
 
         modal.innerHTML = `
@@ -310,11 +310,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let qty = 1;
         const qtyDisplay = modal.querySelector('#pmodal-qty');
-        const addPrice = modal.querySelector('#pmodal-add-price');
+        const addPrice   = modal.querySelector('#pmodal-add-price');
 
         function updateQtyDisplay() {
             qtyDisplay.textContent = qty;
-            addPrice.textContent = `€ ${(price * qty).toFixed(2)}`;
+            addPrice.textContent   = `€ ${(price * qty).toFixed(2)}`;
         }
 
         modal.querySelector('#pmodal-minus').addEventListener('click', () => {
@@ -326,17 +326,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
         modal.querySelector('#pmodal-add').addEventListener('click', () => {
             const name = product.name;
-            const img = product.image_file ? `../images/${product.image_file}` : null;
-            const id = product.id;
+            const img  = product.image_file ? `../images/${product.image_file}` : null;
+            const id   = product.id;
 
             if (cart[name]) {
                 cart[name].qty += qty;
             } else {
                 cart[name] = {
                     price, qty, img, id,
-                    category: t.catNames[product.category_slug] || product.category_slug,
+                    category:    t.catNames[product.category_slug] || product.category_slug,
                     dietaryCode: product.dietary_code,
-                    kcal: product.kcal || 0
+                    kcal:        product.kcal || 0
                 };
             }
 
@@ -352,12 +352,10 @@ document.addEventListener('DOMContentLoaded', () => {
             // ── Pairing suggestions ──────────────────────────────
             const pairings = {
                 'Oven-Baked Sweet Potato Wedges': { id: 22, name: 'Avocado Lime Crema', price: 1.00, img: '../images/dip-avocado.png', dietaryCode: 'VG', kcal: 110 },
-                'Zucchini Fries': { id: 23, name: 'Greek Yogurt Ranch', price: 1.00, img: '../images/dip-ranch.png', dietaryCode: 'V', kcal: 90 }
+                'Zucchini Fries':                 { id: 23, name: 'Greek Yogurt Ranch',  price: 1.00, img: '../images/dip-ranch.png',   dietaryCode: 'V',  kcal: 90  }
             };
 
             if (pairings[name] && !cart[pairings[name].name]) {
-                // Mark the main product as pairing too
-                if (cart[name]) cart[name].isPairing = true;
                 showPairingSuggestion(name, pairings[name]);
             }
         });
@@ -399,7 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
         requestAnimationFrame(() => {
             const box = modal.querySelector('.modal-box');
             box.style.transform = 'scale(1)';
-            box.style.opacity = '1';
+            box.style.opacity   = '1';
         });
 
         modal.querySelector('#pairing-decline').addEventListener('click', () => {
@@ -411,14 +409,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         modal.querySelector('#pairing-accept').addEventListener('click', () => {
             cart[pairing.name] = {
-                price: pairing.price,
-                qty: 1,
-                img: pairing.img,
-                id: pairing.id,
-                category: t.catNames['specials'] || 'Signature Dips',
+                price:       pairing.price,
+                qty:         1,
+                img:         pairing.img,
+                id:          pairing.id,
+                category:    t.catNames['specials'] || 'Signature Dips',
                 dietaryCode: pairing.dietaryCode,
-                kcal: pairing.kcal,
-                isPairing: true
+                kcal:        pairing.kcal,
+                isPairing:   true
             };
             if (cart[mainProductName]) cart[mainProductName].isPairing = true;
             updateFooter();
@@ -504,12 +502,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>`;
         } else {
-            const total = items.reduce((s, [, v]) => s + v.price * v.qty, 0);
+            const total     = items.reduce((s, [, v]) => s + v.price * v.qty, 0);
             const totalKcal = items.reduce((s, [, v]) => s + (v.kcal || 0) * v.qty, 0);
             const itemsHTML = items.map(([name, { price, qty, img, category, dietaryCode, kcal, isPairing }]) => {
                 const dietaryLabel = dietaryCode === 'VG' ? t.vegan : t.vegetarian;
                 const dietaryClass = dietaryCode === 'VG' ? 'vegan' : 'veg';
-                const kcalHTML = kcal > 0 ? `<span class="cart-pill kcal">🔥 ${kcal} kcal</span>` : '';
+                const kcalHTML     = kcal > 0 ? `<span class="cart-pill kcal">🔥 ${kcal} kcal</span>` : '';
                 const categoryHTML = category ? `<span class="cart-pill cat">🍽 ${category}</span>` : '';
                 const pairingStyle = isPairing
                     ? 'border:2px solid #8cc63f;background:#f0fbe0;border-radius:12px;padding:8px;'
@@ -593,27 +591,27 @@ document.addEventListener('DOMContentLoaded', () => {
     // ── Place order ────────────────────────────────────────────
     async function placeOrder(modal) {
         const orderType = sessionStorage.getItem('order_type') || 'eat_in';
-        const items = Object.values(cart).map(item => ({
+        const items     = Object.values(cart).map(item => ({
             product_id: item.id,
-            quantity: item.qty
+            quantity:   item.qty
         }));
 
-        const confirmBtn = modal.querySelector('.modal-confirm-btn');
+        const confirmBtn       = modal.querySelector('.modal-confirm-btn');
         confirmBtn.textContent = t.placingOrder;
-        confirmBtn.disabled = true;
+        confirmBtn.disabled    = true;
 
         try {
-            const res = await fetch('../orders/place-order.php', {
-                method: 'POST',
+            const res  = await fetch('../orders/place-order.php', {
+                method:  'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ order_type: orderType, items })
+                body:    JSON.stringify({ order_type: orderType, items })
             });
             const json = await res.json();
 
             if (!json.success) throw new Error(json.error || 'Order failed');
 
-            const parts = json.order_number.split('-');
-            const rawNum = parseInt(parts[parts.length - 1], 10);
+            const parts      = json.order_number.split('-');
+            const rawNum     = parseInt(parts[parts.length - 1], 10);
             const displayNum = String(rawNum % 100).padStart(2, '0');
 
             modal.innerHTML = `
@@ -645,7 +643,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (err) {
             confirmBtn.textContent = t.placeOrder;
-            confirmBtn.disabled = false;
+            confirmBtn.disabled    = false;
             alert('Something went wrong: ' + err.message);
         }
     }
