@@ -356,6 +356,8 @@ document.addEventListener('DOMContentLoaded', () => {
             };
 
             if (pairings[name] && !cart[pairings[name].name]) {
+                // Mark the main product as pairing too
+                if (cart[name]) cart[name].isPairing = true;
                 showPairingSuggestion(pairings[name]);
             }
         });
@@ -400,7 +402,14 @@ document.addEventListener('DOMContentLoaded', () => {
             box.style.opacity   = '1';
         });
 
-        modal.querySelector('#pairing-decline').addEventListener('click', () => modal.remove());
+        modal.querySelector('#pairing-decline').addEventListener('click', () => {
+            // Only remove isPairing from the main product that triggered this suggestion
+            const mainProducts = ['Oven-Baked Sweet Potato Wedges', 'Zucchini Fries'];
+            mainProducts.forEach(name => {
+                if (cart[name] && cart[name].isPairing) cart[name].isPairing = false;
+            });
+            modal.remove();
+        });
         modal.querySelector('.modal-overlay').addEventListener('click', e => {
             if (e.target.classList.contains('modal-overlay')) modal.remove();
         });
