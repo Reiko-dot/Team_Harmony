@@ -223,10 +223,6 @@ body {
     position: relative;
 }
 
-.product-item:hover {
-    transform: scale(1.03);
-    box-shadow: 0 4px 12px rgba(140, 198, 63, 0.4);
-}
 
 .product-item:active {
     transform: scale(0.97);

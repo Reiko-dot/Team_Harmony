@@ -6,14 +6,14 @@
 // ============================================================
 require_once __DIR__ . '/../db.php';
 
-$order_number = $_POST['order_number'] ?? '';
-$status       = $_POST['status']       ?? '';
-$valid        = ['pending', 'preparing', 'ready', 'completed', 'cancelled'];
+$order_id = (int)($_POST['order_id'] ?? 0);
+$status   = $_POST['status'] ?? '';
+$valid    = ['pending', 'preparing', 'ready', 'completed', 'cancelled'];
 
-if ($order_number && in_array($status, $valid)) {
+if ($order_id && in_array($status, $valid)) {
     $pdo  = getDB();
-    $stmt = $pdo->prepare("UPDATE orders SET status = ? WHERE order_number = ?");
-    $stmt->execute([$status, $order_number]);
+    $stmt = $pdo->prepare("UPDATE orders SET status = ? WHERE id = ?");
+    $stmt->execute([$status, $order_id]);
 }
 
 // Redirect back to overview — same folder
