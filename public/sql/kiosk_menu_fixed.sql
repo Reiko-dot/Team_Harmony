@@ -7,7 +7,7 @@
 -- Serverversie: 10.4.32-MariaDB
 -- PHP-versie: 8.2.12
 
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -204,7 +204,7 @@ INSERT INTO `products` (`id`, `category_id`, `name`, `description`, `price`, `kc
 --
 DROP TABLE IF EXISTS `category_price_summary`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `category_price_summary`  AS SELECT `c`.`name` AS `category`, count(`p`.`id`) AS `total_items`, min(`p`.`price`) AS `min_price`, max(`p`.`price`) AS `max_price`, round(avg(`p`.`price`),2) AS `avg_price` FROM (`products` `p` join `categories` `c` on(`p`.`category_id` = `c`.`id`)) GROUP BY `c`.`id`, `c`.`name` ORDER BY `c`.`sort_order` ASC ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`u240761_kiosk_menu`@`localhost` SQL SECURITY DEFINER VIEW `category_price_summary`  AS SELECT `c`.`name` AS `category`, count(`p`.`id`) AS `total_items`, min(`p`.`price`) AS `min_price`, max(`p`.`price`) AS `max_price`, round(avg(`p`.`price`),2) AS `avg_price` FROM (`products` `p` join `categories` `c` on(`p`.`category_id` = `c`.`id`)) GROUP BY `c`.`id`, `c`.`name` ORDER BY `c`.`sort_order` ASC ;
 
 -- --------------------------------------------------------
 
@@ -213,7 +213,7 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 DROP TABLE IF EXISTS `menu_full`;
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `menu_full`  AS SELECT `p`.`id` AS `id`, `c`.`name` AS `category`, `c`.`slug` AS `category_slug`, `p`.`name` AS `product_name`, `p`.`description` AS `description`, `p`.`price` AS `price`, `p`.`kcal` AS `kcal`, `d`.`code` AS `dietary_code`, `d`.`label` AS `dietary_label`, `p`.`image_file` AS `image_file`, `p`.`available` AS `available`, `p`.`sort_order` AS `sort_order` FROM ((`products` `p` join `categories` `c` on(`p`.`category_id` = `c`.`id`)) join `dietary_tags` `d` on(`p`.`dietary_tag_id` = `d`.`id`)) ORDER BY `c`.`sort_order` ASC, `p`.`sort_order` ASC ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`u240761_kiosk_menu`@`localhost` SQL SECURITY DEFINER VIEW `menu_full`  AS SELECT `p`.`id` AS `id`, `c`.`name` AS `category`, `c`.`slug` AS `category_slug`, `p`.`name` AS `product_name`, `p`.`description` AS `description`, `p`.`price` AS `price`, `p`.`kcal` AS `kcal`, `d`.`code` AS `dietary_code`, `d`.`label` AS `dietary_label`, `p`.`image_file` AS `image_file`, `p`.`available` AS `available`, `p`.`sort_order` AS `sort_order` FROM ((`products` `p` join `categories` `c` on(`p`.`category_id` = `c`.`id`)) join `dietary_tags` `d` on(`p`.`dietary_tag_id` = `d`.`id`)) ORDER BY `c`.`sort_order` ASC, `p`.`sort_order` ASC ;
 
 --
 -- Indexen voor geëxporteerde tabellen

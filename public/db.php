@@ -4,10 +4,10 @@
 //  Lives at root: TEAM_HARMONY/db.php
 // ============================================================
 
-define('DB_HOST', '127.0.0.1');
-define('DB_NAME', 'kiosk_menu');
-define('DB_USER', 'root');
-define('DB_PASS', '');         // ← fill in your phpMyAdmin password
+define('DB_HOST', 'localhost');
+define('DB_NAME', 'u240761_kiosk_menu');
+define('DB_USER', 'u240761_kiosk_menu');
+define('DB_PASS', 'd3tquYsgmdwjpufKxuUb');
 define('DB_CHARSET', 'utf8mb4');
 
 function getDB(): PDO {

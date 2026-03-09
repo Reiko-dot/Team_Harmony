@@ -221,8 +221,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 div.innerHTML = `
                     ${imgHTML}
                     <div class="product-details">
-                        <span class="name">${product.name}</span>
-                        <span class="price">€${parseFloat(product.price).toFixed(2)}</span>
+                        <span class="product-name">${product.name}</span>
+                        <span class="product-price">€${parseFloat(product.price).toFixed(2)}</span>
                     </div>
                     ${badge}`;
 
@@ -348,6 +348,76 @@ document.addEventListener('DOMContentLoaded', () => {
 
             updateFooter();
             modal.remove();
+
+            // ── Pairing suggestions ──────────────────────────────
+            const pairings = {
+                'Oven-Baked Sweet Potato Wedges': { id: 22, name: 'Avocado Lime Crema', price: 1.00, img: '../images/dip-avocado.png', dietaryCode: 'VG', kcal: 110 },
+                'Zucchini Fries':                 { id: 23, name: 'Greek Yogurt Ranch',  price: 1.00, img: '../images/dip-ranch.png',   dietaryCode: 'V',  kcal: 90  }
+            };
+
+            if (pairings[name] && !cart[pairings[name].name]) {
+                showPairingSuggestion(pairings[name]);
+            }
+        });
+    }
+
+    // ── Pairing suggestion modal ───────────────────────────────
+    function showPairingSuggestion(pairing) {
+        const existing = document.getElementById('pairing-modal');
+        if (existing) existing.remove();
+
+        const modal = document.createElement('div');
+        modal.id = 'pairing-modal';
+        modal.style.cssText = 'position:absolute;inset:0;z-index:300;';
+
+        modal.innerHTML = `
+            <div class="modal-overlay" style="align-items:center;">
+                <div class="modal-box" style="height:auto;max-height:none;border-radius:20px;transform:scale(0.85);opacity:0;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),opacity 0.2s ease;">
+                    <div style="text-align:center;padding:8px 0 4px;">
+                        <span style="font-size:36px;">🍽️</span>
+                        <h2 style="margin:10px 0 4px;font-size:20px;color:#0b2b16;">Lekker erbij!</h2>
+                        <p style="color:#555;font-size:14px;margin:0;">Klanten combineren dit graag met:</p>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:14px;background:#f0fbe0;border-radius:14px;padding:14px;">
+                        <img src="${pairing.img}" alt="${pairing.name}" style="width:70px;height:70px;object-fit:cover;border-radius:10px;">
+                        <div style="flex:1;">
+                            <div style="font-weight:bold;font-size:16px;color:#0b2b16;">${pairing.name}</div>
+                            <div style="font-size:13px;color:#888;margin-top:3px;">🔥 ${pairing.kcal} kcal</div>
+                        </div>
+                        <div style="font-weight:bold;font-size:18px;color:#ff7e26;">€${pairing.price.toFixed(2)}</div>
+                    </div>
+                    <div class="modal-actions" style="gap:10px;">
+                        <button id="pairing-decline" class="modal-close-btn">Nee, bedankt</button>
+                        <button id="pairing-accept" class="modal-confirm-btn">Toevoegen ✓</button>
+                    </div>
+                </div>
+            </div>`;
+
+        document.querySelector('.app-container').appendChild(modal);
+        requestAnimationFrame(() => {
+            const box = modal.querySelector('.modal-box');
+            box.style.transform = 'scale(1)';
+            box.style.opacity   = '1';
+        });
+
+        modal.querySelector('#pairing-decline').addEventListener('click', () => modal.remove());
+        modal.querySelector('.modal-overlay').addEventListener('click', e => {
+            if (e.target.classList.contains('modal-overlay')) modal.remove();
+        });
+
+        modal.querySelector('#pairing-accept').addEventListener('click', () => {
+            cart[pairing.name] = {
+                price:       pairing.price,
+                qty:         1,
+                img:         pairing.img,
+                id:          pairing.id,
+                category:    t.catNames['specials'] || 'Signature Dips',
+                dietaryCode: pairing.dietaryCode,
+                kcal:        pairing.kcal,
+                isPairing:   true
+            };
+            updateFooter();
+            modal.remove();
         });
     }
 
@@ -430,15 +500,23 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>`;
         } else {
             const total     = items.reduce((s, [, v]) => s + v.price * v.qty, 0);
-            const itemsHTML = items.map(([name, { price, qty, img, category, dietaryCode, kcal }]) => {
+            const totalKcal = items.reduce((s, [, v]) => s + (v.kcal || 0) * v.qty, 0);
+            const itemsHTML = items.map(([name, { price, qty, img, category, dietaryCode, kcal, isPairing }]) => {
                 const dietaryLabel = dietaryCode === 'VG' ? t.vegan : t.vegetarian;
                 const dietaryClass = dietaryCode === 'VG' ? 'vegan' : 'veg';
                 const kcalHTML     = kcal > 0 ? `<span class="cart-pill kcal">🔥 ${kcal} kcal</span>` : '';
                 const categoryHTML = category ? `<span class="cart-pill cat">🍽 ${category}</span>` : '';
+                const pairingStyle = isPairing
+                    ? 'border:2px solid #8cc63f;background:#f0fbe0;border-radius:12px;padding:8px;'
+                    : '';
+                const pairingBadge = isPairing
+                    ? `<span style="font-size:11px;font-weight:bold;background:#8cc63f;color:#0b2b16;padding:2px 8px;border-radius:10px;margin-bottom:4px;display:inline-block;">🍽️ Pairing</span><br>`
+                    : '';
                 return `
-                <div class="cart-item">
+                <div class="cart-item" style="${pairingStyle}">
                     ${img ? `<img src="${img}" alt="${name}" class="cart-item-img">` : '<div class="cart-img-placeholder"></div>'}
                     <div class="cart-item-info">
+                        ${pairingBadge}
                         <span class="cart-item-name">${name}</span>
                         <div class="cart-item-pills">
                             ${categoryHTML}
@@ -466,6 +544,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <div class="cart-items-list">${itemsHTML}</div>
                         <div class="cart-total-row">
                             <span>${t.total}</span>
+                            <span style="color:#888;font-size:15px;">🔥 ${totalKcal} kcal</span>
                             <span class="cart-total-amount">€ ${total.toFixed(2)}</span>
                         </div>
                         <div class="modal-actions">
