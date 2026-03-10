@@ -532,7 +532,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         <button class="qty-btn minus" data-name="${name}">−</button>
                         <span class="qty-display">${qty}</span>
                         <button class="qty-btn plus" data-name="${name}">+</button>
-                        <button class="qty-btn trash" data-name="${name}" style="color:#c0392b;font-size:15px;">🗑</button>
+                        <button class="qty-btn trash" data-name="${name}" style="color:#c0392b;font-size:13px;letter-spacing:0;">✕</button>
                     </div>
                     <span class="cart-item-subtotal">€ ${(price * qty).toFixed(2)}</span>
                 </div>`;
@@ -571,8 +571,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         modal.querySelectorAll('.qty-btn').forEach(btn => {
-            btn.addEventListener('click', e => {
-                const name = e.target.getAttribute('data-name');
+            btn.addEventListener('click', () => {
+                const name = btn.getAttribute('data-name');
 
                 if (btn.classList.contains('trash')) {
                     delete cart[name];
