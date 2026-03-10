@@ -485,15 +485,15 @@ document.addEventListener('DOMContentLoaded', () => {
     function buildCartItemHTML(name, { price, qty, img, category, dietaryCode, kcal, isPairing }) {
         const dietaryLabel = dietaryCode === 'VG' ? t.vegan : t.vegetarian;
         const dietaryClass = dietaryCode === 'VG' ? 'vegan' : 'veg';
-        const kcalHTML = kcal > 0 ? `<span class="cart-pill kcal">🔥 ${kcal} kcal</span>` : '';
+        const kcalHTML     = kcal > 0 ? `<span class="cart-pill kcal">🔥 ${kcal} kcal</span>` : '';
         const categoryHTML = category ? `<span class="cart-pill cat">🍽 ${category}</span>` : '';
-        const pairingStyle = isPairing ? 'border:2px solid #8cc63f;background:#f0fbe0;border-radius:12px;padding:8px;' : '';
+        const pairingClass = isPairing ? ' cart-item--pairing' : '';
         const pairingBadge = isPairing
-            ? `<span style="font-size:11px;font-weight:bold;background:#8cc63f;color:#0b2b16;padding:2px 8px;border-radius:10px;margin-bottom:4px;display:inline-block;">🍽️ Pairing</span><br>`
+            ? `<span class="cart-pairing-badge">🍽️ Pairing</span>`
             : '';
         const safeName = name.replace(/"/g, '&quot;');
         return `
-        <div class="cart-item" data-item-name="${safeName}" style="${pairingStyle}">
+        <div class="cart-item${pairingClass}" data-item-name="${safeName}">
             ${img ? `<img src="${img}" alt="${safeName}" class="cart-item-img">` : '<div class="cart-img-placeholder"></div>'}
             <div class="cart-item-info">
                 ${pairingBadge}
@@ -505,7 +505,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>
                 <span class="cart-item-unit">€ ${price.toFixed(2)} ${t.each}</span>
             </div>
-            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">
+            <div class="cart-item-right">
                 <div class="cart-item-controls">
                     <button class="qty-btn minus" data-name="${safeName}">−</button>
                     <span class="qty-display">${qty}</span>
@@ -518,14 +518,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function refreshCartTotals(modal) {
-        const newTotal = Object.values(cart).reduce((s, i) => s + i.price * i.qty, 0);
+        const newTotal     = Object.values(cart).reduce((s, i) => s + i.price * i.qty, 0);
         const newTotalKcal = Object.values(cart).reduce((s, i) => s + (i.kcal || 0) * i.qty, 0);
-        const newCount = Object.keys(cart).length;
-        const totalRow = modal.querySelector('.cart-total-amount');
-        const kcalRow = modal.querySelector('.cart-total-row span:nth-child(2)');
-        const countBadge = modal.querySelector('.modal-item-count');
-        if (totalRow) totalRow.textContent = '€ ' + newTotal.toFixed(2);
-        if (kcalRow) kcalRow.textContent = '🔥 ' + newTotalKcal + ' kcal';
+        const newCount     = Object.keys(cart).length;
+        const totalRow     = modal.querySelector('.cart-total-amount');
+        const kcalRow      = modal.querySelector('.cart-total-row span:nth-child(2)');
+        const countBadge   = modal.querySelector('.modal-item-count');
+        if (totalRow)   totalRow.textContent  = '€ ' + newTotal.toFixed(2);
+        if (kcalRow)    kcalRow.textContent   = '🔥 ' + newTotalKcal + ' kcal';
         if (countBadge) countBadge.textContent = newCount + ' item' + (newCount > 1 ? 's' : '');
     }
 
@@ -546,8 +546,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (btn.classList.contains('trash')) {
                 delete cart[name];
             } else if (btn.classList.contains('minus')) {
-                cart[name].qty -= 1;
-                if (cart[name].qty <= 0) delete cart[name];
+                if (cart[name].qty > 1) cart[name].qty -= 1;
             } else if (btn.classList.contains('plus')) {
                 cart[name].qty += 1;
             }
@@ -598,7 +597,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>`;
         } else {
-            const total = items.reduce((s, [, v]) => s + v.price * v.qty, 0);
+            const total     = items.reduce((s, [, v]) => s + v.price * v.qty, 0);
             const totalKcal = items.reduce((s, [, v]) => s + (v.kcal || 0) * v.qty, 0);
             const itemsHTML = items.map(([name, data]) => buildCartItemHTML(name, data)).join('');
 
