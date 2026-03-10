@@ -653,9 +653,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (!json.success) throw new Error(json.error || 'Order failed');
 
-            const parts = json.order_number.split('-');
-            const rawNum = parseInt(parts[parts.length - 1], 10);
-            const displayNum = String(rawNum % 100).padStart(2, '0');
+            const displayNum = String(Math.floor(Math.random() * 99) + 1).padStart(2, '0');
 
             modal.innerHTML = `
                 <div class="modal-overlay">
