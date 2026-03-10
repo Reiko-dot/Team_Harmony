@@ -336,6 +336,14 @@ body {
     padding-top: 6px;
 }
 
+.cart-item>div:last-child {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+    flex-shrink: 0;
+}
+
 .cart-item-img {
     width: 90px;
     height: 90px;
@@ -396,6 +404,15 @@ body {
 
 .qty-btn:hover {
     background: #d0e8a0;
+}
+
+.qty-btn.trash {
+    color: #c0392b;
+    font-size: 14px;
+}
+
+.qty-btn.trash:hover {
+    background: #fde8e8;
 }
 
 .qty-display {
