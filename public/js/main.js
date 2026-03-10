@@ -211,7 +211,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 div.dataset.price = product.price;
 
                 const imgHTML = product.image_file
-                    ? `<img src="../images/${product.image_file}" alt="${product.name}">`
+                    ? `<img src="../images/${product.image_file}" alt="${product.name}" loading="lazy" decoding="async">`
                     : `<div class="product-placeholder"></div>`;
 
                 const badge = product.dietary_code === 'VG'
@@ -236,12 +236,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ── Category buttons ───────────────────────────────────────
+
+    // ── Preload images for a category in the background ───────
+    async function preloadCategory(category) {
+        try {
+            const res = await fetch(`../get-products.php?category=${category}`);
+            const json = await res.json();
+            if (!json.success) return;
+            json.data.forEach(product => {
+                if (product.image_file) {
+                    const img = new Image();
+                    img.src = `../images/${product.image_file}`;
+                }
+            });
+        } catch (e) { /* silently ignore */ }
+    }
+
+        // ── Category buttons ───────────────────────────────────────
     buttons.forEach(button => {
         button.addEventListener('click', () => {
             buttons.forEach(btn => btn.classList.remove('active'));
             button.classList.add('active');
-            loadProducts(button.getAttribute('data-category'));
+            const cat = button.getAttribute('data-category');
+            loadProducts(cat);
+            // Preload next category
+            const allCats = Array.from(buttons).map(b => b.getAttribute('data-category'));
+            const idx = allCats.indexOf(cat);
+            const nextCat = allCats[(idx + 1) % allCats.length];
+            if (nextCat !== cat) preloadCategory(nextCat);
         });
     });
 
