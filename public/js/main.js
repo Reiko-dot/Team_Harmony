@@ -482,6 +482,105 @@ document.addEventListener('DOMContentLoaded', () => {
     // ── Cart modal ─────────────────────────────────────────────
     document.querySelector('.order-btn').addEventListener('click', showCartModal);
 
+    function buildCartItemHTML(name, { price, qty, img, category, dietaryCode, kcal, isPairing }) {
+        const dietaryLabel = dietaryCode === 'VG' ? t.vegan : t.vegetarian;
+        const dietaryClass = dietaryCode === 'VG' ? 'vegan' : 'veg';
+        const kcalHTML     = kcal > 0 ? `<span class="cart-pill kcal">🔥 ${kcal} kcal</span>` : '';
+        const categoryHTML = category ? `<span class="cart-pill cat">🍽 ${category}</span>` : '';
+        const pairingStyle = isPairing ? 'border:2px solid #8cc63f;background:#f0fbe0;border-radius:12px;padding:8px;' : '';
+        const pairingBadge = isPairing
+            ? `<span style="font-size:11px;font-weight:bold;background:#8cc63f;color:#0b2b16;padding:2px 8px;border-radius:10px;margin-bottom:4px;display:inline-block;">🍽️ Pairing</span><br>`
+            : '';
+        const safeName = name.replace(/"/g, '&quot;');
+        return `
+        <div class="cart-item" data-item-name="${safeName}" style="${pairingStyle}">
+            ${img ? `<img src="${img}" alt="${safeName}" class="cart-item-img">` : '<div class="cart-img-placeholder"></div>'}
+            <div class="cart-item-info">
+                ${pairingBadge}
+                <span class="cart-item-name">${name}</span>
+                <div class="cart-item-pills">
+                    ${categoryHTML}
+                    <span class="cart-pill dietary ${dietaryClass}">${dietaryLabel}</span>
+                    ${kcalHTML}
+                </div>
+                <span class="cart-item-unit">€ ${price.toFixed(2)} ${t.each}</span>
+            </div>
+            <div class="cart-item-controls">
+                <button class="qty-btn minus" data-name="${safeName}">−</button>
+                <span class="qty-display">${qty}</span>
+                <button class="qty-btn plus" data-name="${safeName}">+</button>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0;">
+                <button class="qty-btn trash" data-name="${safeName}"
+                    style="width:28px;height:28px;border-radius:50%;border:none;background:#fde8e8;
+                           color:#c0392b;font-size:14px;font-weight:bold;cursor:pointer;
+                           display:flex;align-items:center;justify-content:center;line-height:1;">✕</button>
+                <span class="cart-item-subtotal">€ ${(price * qty).toFixed(2)}</span>
+            </div>
+        </div>`;
+    }
+
+    function refreshCartTotals(modal) {
+        const newTotal     = Object.values(cart).reduce((s, i) => s + i.price * i.qty, 0);
+        const newTotalKcal = Object.values(cart).reduce((s, i) => s + (i.kcal || 0) * i.qty, 0);
+        const newCount     = Object.keys(cart).length;
+        const totalRow     = modal.querySelector('.cart-total-amount');
+        const kcalRow      = modal.querySelector('.cart-total-row span:nth-child(2)');
+        const countBadge   = modal.querySelector('.modal-item-count');
+        if (totalRow)   totalRow.textContent  = '€ ' + newTotal.toFixed(2);
+        if (kcalRow)    kcalRow.textContent   = '🔥 ' + newTotalKcal + ' kcal';
+        if (countBadge) countBadge.textContent = newCount + ' item' + (newCount > 1 ? 's' : '');
+    }
+
+    function attachCartEvents(modal) {
+        modal.querySelector('.modal-close-btn').addEventListener('click', () => modal.remove());
+        modal.querySelector('.modal-overlay').addEventListener('click', e => {
+            if (e.target === e.currentTarget) modal.remove();
+        });
+
+        modal.querySelector('.cart-items-list').addEventListener('click', e => {
+            const btn = e.target.closest('.qty-btn');
+            if (!btn) return;
+            e.stopPropagation();
+
+            const name = btn.getAttribute('data-name');
+            if (!name || !cart[name]) return;
+
+            if (btn.classList.contains('trash')) {
+                delete cart[name];
+            } else if (btn.classList.contains('minus')) {
+                cart[name].qty -= 1;
+                if (cart[name].qty <= 0) delete cart[name];
+            } else if (btn.classList.contains('plus')) {
+                cart[name].qty += 1;
+            }
+
+            updateFooter();
+
+            if (Object.keys(cart).length === 0) {
+                modal.remove();
+                return;
+            }
+
+            if (!cart[name]) {
+                const row = modal.querySelector(`.cart-item[data-item-name="${name}"]`);
+                if (row) row.remove();
+            } else {
+                const row = modal.querySelector(`.cart-item[data-item-name="${name}"]`);
+                if (row) {
+                    row.querySelector('.qty-display').textContent = cart[name].qty;
+                    row.querySelector('.cart-item-subtotal').textContent =
+                        '€ ' + (cart[name].price * cart[name].qty).toFixed(2);
+                }
+            }
+
+            refreshCartTotals(modal);
+        });
+
+        const confirmBtn = modal.querySelector('.modal-confirm-btn');
+        if (confirmBtn) confirmBtn.addEventListener('click', () => placeOrder(modal));
+    }
+
     function showCartModal() {
         const existing = document.getElementById('cart-modal');
         if (existing) existing.remove();
@@ -502,41 +601,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     </div>
                 </div>`;
         } else {
-            const total = items.reduce((s, [, v]) => s + v.price * v.qty, 0);
+            const total     = items.reduce((s, [, v]) => s + v.price * v.qty, 0);
             const totalKcal = items.reduce((s, [, v]) => s + (v.kcal || 0) * v.qty, 0);
-            const itemsHTML = items.map(([name, { price, qty, img, category, dietaryCode, kcal, isPairing }]) => {
-                const dietaryLabel = dietaryCode === 'VG' ? t.vegan : t.vegetarian;
-                const dietaryClass = dietaryCode === 'VG' ? 'vegan' : 'veg';
-                const kcalHTML = kcal > 0 ? `<span class="cart-pill kcal">🔥 ${kcal} kcal</span>` : '';
-                const categoryHTML = category ? `<span class="cart-pill cat">🍽 ${category}</span>` : '';
-                const pairingStyle = isPairing
-                    ? 'border:2px solid #8cc63f;background:#f0fbe0;border-radius:12px;padding:8px;'
-                    : '';
-                const pairingBadge = isPairing
-                    ? `<span style="font-size:11px;font-weight:bold;background:#8cc63f;color:#0b2b16;padding:2px 8px;border-radius:10px;margin-bottom:4px;display:inline-block;">🍽️ Pairing</span><br>`
-                    : '';
-                return `
-                <div class="cart-item" style="${pairingStyle}">
-                    ${img ? `<img src="${img}" alt="${name}" class="cart-item-img">` : '<div class="cart-img-placeholder"></div>'}
-                    <div class="cart-item-info">
-                        ${pairingBadge}
-                        <span class="cart-item-name">${name}</span>
-                        <div class="cart-item-pills">
-                            ${categoryHTML}
-                            <span class="cart-pill dietary ${dietaryClass}">${dietaryLabel}</span>
-                            ${kcalHTML}
-                        </div>
-                        <span class="cart-item-unit">€ ${price.toFixed(2)} ${t.each}</span>
-                    </div>
-                    <div class="cart-item-controls">
-                        <button class="qty-btn minus" data-name="${name}">−</button>
-                        <span class="qty-display">${qty}</span>
-                        <button class="qty-btn plus" data-name="${name}">+</button>
-                        <button class="qty-btn trash" data-name="${name}" style="color:#c0392b;font-size:13px;letter-spacing:0;">✕</button>
-                    </div>
-                    <span class="cart-item-subtotal">€ ${(price * qty).toFixed(2)}</span>
-                </div>`;
-            }).join('');
+            const itemsHTML = items.map(([name, data]) => buildCartItemHTML(name, data)).join('');
 
             modal.innerHTML = `
                 <div class="modal-overlay">
@@ -565,68 +632,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (box) box.classList.add('visible');
         });
 
-        modal.querySelector('.modal-close-btn').addEventListener('click', () => modal.remove());
-        modal.querySelector('.modal-overlay').addEventListener('click', e => {
-            if (e.target.classList.contains('modal-overlay')) modal.remove();
-        });
-
-        modal.querySelectorAll('.qty-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const name = btn.getAttribute('data-name');
-
-                if (btn.classList.contains('trash')) {
-                    delete cart[name];
-                } else if (btn.classList.contains('minus')) {
-                    cart[name].qty -= 1;
-                    if (cart[name].qty <= 0) delete cart[name];
-                } else {
-                    cart[name].qty += 1;
-                }
-
-                updateFooter();
-
-                // Als de cart leeg is, sluit modal
-                if (Object.keys(cart).length === 0) {
-                    modal.remove();
-                    return;
-                }
-
-                // In-place update: geen modal sluiten/heropenen
-                const countBadge = modal.querySelector('.modal-item-count');
-
-                if (!cart[name]) {
-                    // Verwijder item-rij
-                    const row = [...modal.querySelectorAll('.cart-item')].find(
-                        el => el.querySelector(`[data-name="${name}"]`)
-                    );
-                    if (row) row.remove();
-                } else {
-                    // Update qty display en subtotaal
-                    const row = [...modal.querySelectorAll('.cart-item')].find(
-                        el => el.querySelector(`[data-name="${name}"]`)
-                    );
-                    if (row) {
-                        row.querySelector('.qty-display').textContent = cart[name].qty;
-                        row.querySelector('.cart-item-subtotal').textContent =
-                            '€ ' + (cart[name].price * cart[name].qty).toFixed(2);
-                    }
-                }
-
-                // Update totaal, kcal en item count
-                const newTotal = Object.values(cart).reduce((s, i) => s + i.price * i.qty, 0);
-                const newTotalKcal = Object.values(cart).reduce((s, i) => s + (i.kcal || 0) * i.qty, 0);
-                const newCount = Object.keys(cart).length;
-
-                const totalRow = modal.querySelector('.cart-total-amount');
-                const kcalRow = modal.querySelector('.cart-total-row span:nth-child(2)');
-                if (totalRow) totalRow.textContent = '€ ' + newTotal.toFixed(2);
-                if (kcalRow) kcalRow.textContent = '🔥 ' + newTotalKcal + ' kcal';
-                if (countBadge) countBadge.textContent = newCount + ' item' + (newCount > 1 ? 's' : '');
-            });
-        });
-
-        const confirmBtn = modal.querySelector('.modal-confirm-btn');
-        if (confirmBtn) confirmBtn.addEventListener('click', () => placeOrder(modal));
+        attachCartEvents(modal);
     }
 
     // ── Place order ────────────────────────────────────────────
