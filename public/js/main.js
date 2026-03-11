@@ -390,34 +390,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const modal = document.createElement('div');
         modal.id = 'pairing-modal';
-        modal.style.cssText = 'position:absolute;inset:0;z-index:300;';
+        modal.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.55);backdrop-filter:blur(3px);';
 
         modal.innerHTML = `
-            <div class="modal-overlay" style="align-items:center;">
-                <div class="modal-box" style="height:auto;max-height:none;border-radius:20px;transform:scale(0.85);opacity:0;transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),opacity 0.2s ease;">
-                    <div style="text-align:center;padding:8px 0 4px;">
-                        <span style="font-size:36px;">🍽️</span>
-                        <h2 style="margin:10px 0 4px;font-size:20px;color:#0b2b16;">Lekker erbij!</h2>
-                        <p style="color:#555;font-size:14px;margin:0;">Klanten combineren dit graag met:</p>
+            <div class="pairing-popup" style="
+                background:#fff;
+                border-radius:24px;
+                padding:32px 28px 24px;
+                width:90%;
+                max-width:400px;
+                box-shadow:0 24px 60px rgba(0,0,0,0.25);
+                display:flex;
+                flex-direction:column;
+                gap:18px;
+                transform:scale(0.88);
+                opacity:0;
+                transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),opacity 0.2s ease;
+            ">
+                <div style="text-align:center;">
+                    <span style="font-size:48px;line-height:1;">🍽️</span>
+                    <h2 style="margin:12px 0 4px;font-size:22px;color:#0b2b16;font-weight:800;">Lekker erbij!</h2>
+                    <p style="color:#666;font-size:15px;margin:0;">Klanten combineren dit graag met:</p>
+                </div>
+                <div style="display:flex;align-items:center;gap:16px;background:#f0fbe0;border-radius:16px;padding:16px;">
+                    <img src="${pairing.img}" alt="${pairing.name}" style="width:80px;height:80px;object-fit:cover;border-radius:12px;flex-shrink:0;">
+                    <div style="flex:1;min-width:0;">
+                        <div style="font-weight:800;font-size:17px;color:#0b2b16;line-height:1.2;">${pairing.name}</div>
+                        <div style="font-size:13px;color:#888;margin-top:5px;">🔥 ${pairing.kcal} kcal</div>
                     </div>
-                    <div style="display:flex;align-items:center;gap:14px;background:#f0fbe0;border-radius:14px;padding:14px;">
-                        <img src="${pairing.img}" alt="${pairing.name}" style="width:70px;height:70px;object-fit:cover;border-radius:10px;">
-                        <div style="flex:1;">
-                            <div style="font-weight:bold;font-size:16px;color:#0b2b16;">${pairing.name}</div>
-                            <div style="font-size:13px;color:#888;margin-top:3px;">🔥 ${pairing.kcal} kcal</div>
-                        </div>
-                        <div style="font-weight:bold;font-size:18px;color:#ff7e26;">€${pairing.price.toFixed(2)}</div>
-                    </div>
-                    <div class="modal-actions" style="gap:10px;">
-                        <button id="pairing-decline" class="modal-close-btn">Nee, bedankt</button>
-                        <button id="pairing-accept" class="modal-confirm-btn">Toevoegen ✓</button>
-                    </div>
+                    <div style="font-weight:900;font-size:20px;color:#ff7e26;flex-shrink:0;">€${pairing.price.toFixed(2)}</div>
+                </div>
+                <div style="display:flex;gap:12px;">
+                    <button id="pairing-decline" style="
+                        flex:1;padding:16px;border:2px solid #ddd;background:#fff;
+                        border-radius:12px;font-size:16px;font-weight:700;
+                        color:#555;cursor:pointer;
+                    ">Nee, bedankt</button>
+                    <button id="pairing-accept" style="
+                        flex:1;padding:16px;border:none;background:#3a8c3f;
+                        border-radius:12px;font-size:16px;font-weight:700;
+                        color:#fff;cursor:pointer;
+                    ">Toevoegen ✓</button>
                 </div>
             </div>`;
 
-        document.querySelector('.app-container').appendChild(modal);
+        document.body.appendChild(modal);
         requestAnimationFrame(() => {
-            const box = modal.querySelector('.modal-box');
+            const box = modal.querySelector('.pairing-popup');
             box.style.transform = 'scale(1)';
             box.style.opacity = '1';
         });
@@ -425,8 +444,8 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.querySelector('#pairing-decline').addEventListener('click', () => {
             modal.remove();
         });
-        modal.querySelector('.modal-overlay').addEventListener('click', e => {
-            if (e.target.classList.contains('modal-overlay')) modal.remove();
+        modal.addEventListener('click', e => {
+            if (e.target === modal) modal.remove();
         });
 
         modal.querySelector('#pairing-accept').addEventListener('click', () => {
@@ -475,24 +494,50 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const modal = document.createElement('div');
         modal.id = 'clear-modal';
+        modal.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.55);backdrop-filter:blur(3px);';
         modal.innerHTML = `
-            <div class="modal-overlay">
-                <div class="modal-box clear-confirm-box" style="height:auto;max-height:none;gap:16px;">
-                    <div class="modal-header"><h2>${t.clearTitle}</h2></div>
-                    <p style="color:#555;font-size:16px;margin:0;">${t.clearBody}</p>
-                    <div class="modal-actions">
-                        <button class="modal-close-btn" id="clear-cancel-btn">${t.keepItems}</button>
-                        <button class="modal-confirm-btn" id="clear-proceed-btn" style="background:#c0392b;">${t.clearOrder}</button>
-                    </div>
+            <div class="clear-confirm-popup" style="
+                background:#fff;
+                border-radius:24px;
+                padding:36px 32px 28px;
+                width:90%;
+                max-width:400px;
+                box-shadow:0 24px 60px rgba(0,0,0,0.25);
+                text-align:center;
+                display:flex;
+                flex-direction:column;
+                gap:16px;
+                transform:scale(0.88);
+                opacity:0;
+                transition:transform 0.25s cubic-bezier(0.34,1.56,0.64,1),opacity 0.2s ease;
+            ">
+                <div style="font-size:52px;line-height:1;">🗑️</div>
+                <h2 style="margin:0;font-size:24px;color:#0b2b16;font-weight:800;">${t.clearTitle.replace('🗑️ ', '')}</h2>
+                <p style="color:#555;font-size:16px;margin:0;line-height:1.5;">${t.clearBody}</p>
+                <div style="display:flex;gap:12px;margin-top:8px;">
+                    <button id="clear-cancel-btn" style="
+                        flex:1;padding:16px;border:2px solid #ddd;background:#fff;
+                        border-radius:12px;font-size:16px;font-weight:700;
+                        color:#333;cursor:pointer;
+                    ">${t.keepItems}</button>
+                    <button id="clear-proceed-btn" style="
+                        flex:1;padding:16px;border:none;background:#c0392b;
+                        border-radius:12px;font-size:16px;font-weight:700;
+                        color:#fff;cursor:pointer;
+                    ">${t.clearOrder}</button>
                 </div>
             </div>`;
 
-        document.querySelector('.app-container').appendChild(modal);
-        requestAnimationFrame(() => modal.querySelector('.modal-box').classList.add('visible'));
+        document.body.appendChild(modal);
+        requestAnimationFrame(() => {
+            const box = modal.querySelector('.clear-confirm-popup');
+            box.style.transform = 'scale(1)';
+            box.style.opacity = '1';
+        });
 
         modal.querySelector('#clear-cancel-btn').addEventListener('click', () => modal.remove());
-        modal.querySelector('.modal-overlay').addEventListener('click', e => {
-            if (e.target.classList.contains('modal-overlay')) modal.remove();
+        modal.addEventListener('click', e => {
+            if (e.target === modal) modal.remove();
         });
         modal.querySelector('#clear-proceed-btn').addEventListener('click', () => {
             cart = {};
@@ -644,7 +689,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 </div>`;
         }
 
-        document.querySelector('.app-container').appendChild(modal);
+        document.body.appendChild(modal);
         requestAnimationFrame(() => {
             const box = modal.querySelector('.modal-box');
             if (box) box.classList.add('visible');
