@@ -3,10 +3,12 @@
 ## Project structure
 
 TEAM_HARMONY/
-├── kiosk-field-research/
+│
+├── 📁 kiosk-field-research/          # Research materials
 │   ├── kiosk-document research.pdf
 │   └── kiosk-video2.mp4
-├── public/
+│
+├── 📁 public/                         # Frontend assets
 │   ├── css/
 │   │   ├── order-type.css
 │   │   ├── product.css
@@ -16,19 +18,22 @@ TEAM_HARMONY/
 │   └── js/
 │       ├── kiosk-start.js
 │       └── main.js
-├── orders/
+│
+├── 📁 orders/                         # Order logic
 │   ├── order-type.php
 │   ├── overview-screen.php
 │   ├── place-order.php
 │   └── update-status.php
-├── products/
+│
+├── 📁 products/                       # Product pages
 │   └── product-screen.php
-├── sql/
+│
+├── 📁 sql/                            # Database
 │   └── kiosk_menu_fixed.sql
-├── db.php
-├── get-products.php
-├── index.php
+│
+├── db.php                             # DB connection
+├── get-products.php                   # Product fetcher
+├── index.php                          # Entry point
 ├── .gitattributes
-├── kiosk-eindproductvid2.mp4
 └── README.md
 
