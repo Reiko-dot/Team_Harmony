@@ -72,3 +72,5 @@ Naast de kiosk voor klanten heeft dit project een apart overzichtsscherm voor he
 4. Start een lokale server (bijv. via XAMPP of `php -S localhost:8000`)
 5. Open `index.php` om als klant een bestelling te plaatsen
 6. Open `overview-screen.php` op een tweede scherm/tablet voor het keukenpersoneel
+
+7. Of open https://u240761.gluwebsite.nl/public/ dan kom je er ook en kan je de bovenstaande kitchentool gebruiken.
